@@ -19,6 +19,8 @@ import actions from 'actions';
 import useMedia from 'hooks/useMedia';
 
 import './LeftPanel.scss';
+import SettingsPanel from 'components/SettingsPanel';
+import SearchPanel from 'components/SearchPanel';
 
 const LeftPanel = () => {
   const isMobile = useMedia(
@@ -37,7 +39,16 @@ const LeftPanel = () => {
     false,
   );
 
-  const [currentToolbarGroup, isToolsHeaderOpen,isOpen, isDisabled, activePanel, customPanels, currentWidth, notesInLeftPanel] = useSelector(
+  const [
+    currentToolbarGroup,
+    isToolsHeaderOpen,
+    isOpen,
+    isDisabled,
+    activePanel,
+    customPanels,
+    currentWidth,
+    notesInLeftPanel,
+  ] = useSelector(
     state => [
       selectors.getCurrentToolbarGroup(state),
       selectors.isElementOpen(state, 'toolsHeader'),
@@ -85,36 +96,33 @@ const LeftPanel = () => {
       onDragOver={onDragOver}
       data-element="leftPanel"
     >
-      <div
-        className="left-panel-container"
-        style={style}
-      >
-        {isMobile &&
-          <div
-            className="close-container"
-          >
+      <div className="left-panel-container" style={style}>
+        {isMobile && (
+          <div className="close-container">
             <div
               className="close-icon-container"
               onClick={() => {
                 dispatch(actions.closeElements(['leftPanel']));
               }}
             >
-              <Icon
-                glyph="ic_close_black_24px"
-                className="close-icon"
-              />
+              <Icon glyph="ic_close_black_24px" className="close-icon" />
             </div>
-          </div>}
+          </div>
+        )}
         <div className="left-panel-header">
           <LeftPanelTabs />
         </div>
-        {activePanel === 'thumbnailsPanel' && <ThumbnailsPanel/>}
+
         {activePanel === 'outlinesPanel' && <OutlinesPanel />}
-        {activePanel === 'bookmarksPanel' && <BookmarksPanel />}
+        {activePanel === 'thumbnailsPanel' && <ThumbnailsPanel />}
+        {activePanel === 'leftSearchPanel' && <SearchPanel />}
+        {activePanel === 'leftBookmarksPanel' && <BookmarksPanel />}
+        {activePanel === 'settingsPanel' && <SettingsPanel />}
+
         {activePanel === 'layersPanel' && <LayersPanel />}
         {core.isFullPDFEnabled() && activePanel === 'signaturePanel' && <SignaturePanel />}
         {notesInLeftPanel && activePanel === 'notesPanel' && <NotesPanel currentLeftPanelWidth={currentWidth} />}
-        {customPanels.map(({ panel }, index) => (
+        {/* {customPanels.map(({ panel }, index) => (
           <CustomElement
             key={panel.dataElement || index}
             className={`Panel ${panel.dataElement}`}
@@ -122,16 +130,17 @@ const LeftPanel = () => {
             dataElement={panel.dataElement}
             render={panel.render}
           />
-        ))}
+        ))} */}
       </div>
-      {!isTabletAndMobile &&
+      {!isTabletAndMobile && (
         <ResizeBar
           dataElement="leftPanelResizeBar"
           minWidth={minWidth}
           onResize={_width => {
             dispatch(actions.setLeftPanelWidth(_width));
           }}
-        />}
+        />
+      )}
     </div>
   );
 };

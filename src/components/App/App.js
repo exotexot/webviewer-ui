@@ -49,7 +49,6 @@ import actions from 'actions';
 
 import './App.scss';
 
-
 // TODO: Use constants
 const tabletBreakpoint = window.matchMedia('(min-width: 641px) and (max-width: 900px)');
 
@@ -133,16 +132,10 @@ const App = ({ removeEventHandlers }) => {
         <div className="content">
           <LeftPanel />
           <DocumentContainer />
-          <RightPanel
-            dataElement="searchPanel"
-            onResize={width => dispatch(actions.setSearchPanelWidth(width))}
-          >
+          <RightPanel dataElement="searchPanel" onResize={width => dispatch(actions.setSearchPanelWidth(width))}>
             <SearchPanel />
           </RightPanel>
-          <RightPanel
-            dataElement="notesPanel"
-            onResize={width => dispatch(actions.setNotesPanelWidth(width))}
-          >
+          <RightPanel dataElement="notesPanel" onResize={width => dispatch(actions.setNotesPanelWidth(width))}>
             <NotesPanel />
           </RightPanel>
         </div>
