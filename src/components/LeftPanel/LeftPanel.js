@@ -62,7 +62,7 @@ const LeftPanel = () => {
     shallowEqual,
   );
 
-  const minWidth = 264;
+  const minWidth = 320;
   const dispatch = useDispatch();
 
   const onDrop = e => {
@@ -109,9 +109,9 @@ const LeftPanel = () => {
             </div>
           </div>
         )}
-        <div className="left-panel-header">
+        {/* <div className="left-panel-header">
           <LeftPanelTabs />
-        </div>
+        </div> */}
 
         {activePanel === 'outlinesPanel' && <OutlinesPanel />}
         {activePanel === 'thumbnailsPanel' && <ThumbnailsPanel />}

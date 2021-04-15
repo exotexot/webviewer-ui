@@ -7,23 +7,32 @@ import useMedia from 'hooks/useMedia';
 import SearchPanel from './SearchPanel';
 
 function SearchPanelContainer(props) {
-  const isMobile = useMedia(['(max-width: 640px)'],[true], false);
+  const isMobile = useMedia(['(max-width: 640px)'], [true], false);
 
-  const [isOpen, currentWidth, pageLabels, shouldClearSearchPanelOnClose] = useSelector(state => [
-    selectors.isElementOpen(state, 'searchPanel'),
-    selectors.getSearchPanelWidth(state),
-    selectors.getPageLabels(state),
-    selectors.shouldClearSearchPanelOnClose(state),
-  ], shallowEqual);
+  const [isOpen, currentWidth, pageLabels, shouldClearSearchPanelOnClose] = useSelector(
+    state => [
+      selectors.isElementOpen(state, 'leftSearchPanel'),
+      selectors.getSearchPanelWidth(state),
+      selectors.getPageLabels(state),
+      selectors.shouldClearSearchPanelOnClose(state),
+    ],
+    shallowEqual,
+  );
 
   const dispatch = useDispatch();
-  const closeSearchPanel = React.useCallback(function closeSearchPanel() {
-    dispatch(actions.closeElements(['searchPanel']));
-  }, [dispatch]);
+  const closeSearchPanel = React.useCallback(
+    function closeSearchPanel() {
+      dispatch(actions.closeElements(['leftSearchPanel']));
+    },
+    [dispatch],
+  );
 
-  const clearSearchInputValue = React.useCallback(function clearSearchInputValue() {
-    dispatch(actions.setSearchValue(''));
-  }, [dispatch]);
+  const clearSearchInputValue = React.useCallback(
+    function clearSearchInputValue() {
+      dispatch(actions.setSearchValue(''));
+    },
+    [dispatch],
+  );
 
   const setActiveResult = React.useCallback(function setActiveResult(result) {
     core.setActiveSearchResult(result);
@@ -57,18 +66,21 @@ function SearchPanelContainer(props) {
   }, [isMobile, clearSearchInputValue, shouldClearSearchPanelOnClose]);
    */
 
-  React.useEffect(function clearSearchResult() {
-    if (isMobile) {
-      // for mobile we want to keep results in panel as search panel is on top of the content
-      // and user will need to close the panel to view the content.
-      return;
-    }
+  React.useEffect(
+    function clearSearchResult() {
+      if (isMobile) {
+        // for mobile we want to keep results in panel as search panel is on top of the content
+        // and user will need to close the panel to view the content.
+        return;
+      }
 
-    if (!isOpen && shouldClearSearchPanelOnClose) {
-      core.clearSearchResults();
-      clearSearchInputValue();
-    }
-  }, [isMobile, isOpen, shouldClearSearchPanelOnClose]);
+      if (!isOpen && shouldClearSearchPanelOnClose) {
+        core.clearSearchResults();
+        clearSearchInputValue();
+      }
+    },
+    [isMobile, isOpen, shouldClearSearchPanelOnClose],
+  );
 
   const combinedProps = {
     ...props,
@@ -80,9 +92,7 @@ function SearchPanelContainer(props) {
     isMobile,
   };
 
-  return (
-    <SearchPanel {...combinedProps} />
-  );
+  return <SearchPanel {...combinedProps} />;
 }
 
 export default SearchPanelContainer;
