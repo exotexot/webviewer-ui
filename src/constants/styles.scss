@@ -28,8 +28,7 @@ $pdftron-blue: #00a5e4; // TODO: confirm that this is what we want
 $document-bg-color: $white;
 
 // Shadows
-$md-shadow1: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12),
-  0 1px 3px 0 rgba(0, 0, 0, 0.12);
+$md-shadow1: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
 
 // Screens
 $tablet-width: 900px;
@@ -39,7 +38,7 @@ $small-mobile-width: 430px;
 $signature-modal-shared-color: #e1e1e3;
 
 // Dark defaults for new ui:
-$gray-3: #343A40;
+$gray-3: #343a40;
 
 %open {
   &.open {
@@ -172,7 +171,6 @@ $gray-3: #343A40;
 // https://stackoverflow.com/questions/12070759/make-absolute-positioned-div-expand-parent-div-height
 @mixin panel-height-fix {
   @include tablet-and-desktop {
-
     height: calc(100% - 37px); // minus the height of the top header;
     @include tablet {
       height: calc(100% - 53px); // minus the height of the top header;
@@ -184,6 +182,10 @@ $gray-3: #343A40;
       @include tablet {
         height: calc(100% - 104px); // minus the height of both headers;
       }
+    }
+
+    &.tools-header-and-header-hidden {
+      height: 100%;
     }
   }
 }

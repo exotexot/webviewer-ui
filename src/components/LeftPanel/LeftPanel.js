@@ -41,6 +41,7 @@ const LeftPanel = () => {
 
   const [
     currentToolbarGroup,
+    isHeaderOpen,
     isToolsHeaderOpen,
     isOpen,
     isDisabled,
@@ -51,6 +52,7 @@ const LeftPanel = () => {
   ] = useSelector(
     state => [
       selectors.getCurrentToolbarGroup(state),
+      selectors.isElementOpen(state, 'header'),
       selectors.isElementOpen(state, 'toolsHeader'),
       selectors.isElementOpen(state, 'leftPanel'),
       selectors.isElementDisabled(state, 'leftPanel'),
@@ -91,6 +93,7 @@ const LeftPanel = () => {
         LeftPanel: true,
         'closed': !isVisible,
         'tools-header-open': isToolsHeaderOpen && currentToolbarGroup !== 'toolbarGroup-View',
+        'tools-header-and-header-hidden': !isHeaderOpen && !isToolsHeaderOpen,
       })}
       onDrop={onDrop}
       onDragOver={onDragOver}

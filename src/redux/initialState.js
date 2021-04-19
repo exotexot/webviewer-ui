@@ -22,7 +22,7 @@ export default {
     currentLanguage: 'en',
     disabledElements: {},
     openElements: {
-      header: true,
+      header: false,
       toolsHeader: false,
     },
     panelWidths: {
