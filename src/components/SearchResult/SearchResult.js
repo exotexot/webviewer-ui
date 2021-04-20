@@ -58,13 +58,58 @@ function SearchResultListItem(props) {
   const currentListItem = searchResults[currentResultIndex];
   const outlines = useSelector(state => selectors.getOutlines(state));
 
-  var deepFlatten = function (array) {
-    return array.reduce(function (r, e) {
-      return Array.isArray(e.children) ? r.push(...deepFlatten(e.children)) : r.push(e.children), r;
-    }, []);
+  function flatten(array) {
+    return array.reduce( (acc, e) => {
+
+      if (e.Ac === undefined) {
+        return acc;
+      }
+
+      if (Array.isArray(e.children) && e.children.length > 0) {
+        // if the element is an array, fall flatten on it again and then take the returned value and concat it.
+        acc.push({ name: e.name, Ac: e.Ac });
+        return acc.concat(flatten(e.children));
+      } else {
+        // otherwise just concat the value
+        return acc.concat(e);
+      }
+    }, [] ); // initial value for the accumulator is []
+  }
+
+  const newOutline = flatten(outlines);
+
+
+  // Finds chapter titles based on Outline Information.
+  // This is relevant for the search module
+  const findChapterTitle = (outline, page) => {
+
+    if (outline.length < 1) {
+      return false;
+    }
+
+    const numbers = outline.map(a => a.Ac);
+    const chapterNumber = numbers.reduce((a, b) => {
+      let aDiff = Math.abs(a - page);
+      let bDiff = Math.abs(b - page);
+
+      if (aDiff === bDiff) {
+        return a <= b ? a : b;
+      } else {
+        return bDiff < aDiff ? b : a;
+      }
+    });
+
+    const chapter = outline
+      .slice()
+      .reverse()
+      .find(el => el.Ac === chapterNumber);
+
+
+    return chapter.name;
+    // return "spas12t"
   };
 
-  console.log('OUTLIBE', deepFlatten(outlines));
+  const title = findChapterTitle(newOutline, currentListItem.pageNum);
 
   return (
     <button
@@ -76,7 +121,7 @@ function SearchResultListItem(props) {
         }
       }}
     >
-      <p> Headline here2 {currentListItem.pageNum}</p>
+      <p> {title}</p>
       {textBeforeSearchValue}
       <span className="search-value">{searchValue}</span>
       {textAfterSearchValue}
