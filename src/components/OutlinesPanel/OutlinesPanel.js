@@ -17,6 +17,7 @@ import actions from 'actions';
 import selectors from 'selectors';
 
 import './OutlinesPanel.scss';
+import OutlineNew from 'components/OutlineNew';
 
 function OutlinesPanel() {
   const isDisabled = useSelector(state => selectors.isElementDisabled(state, DataElements.OUTLINES_PANEL));
@@ -63,6 +64,26 @@ function OutlinesPanel() {
     });
   }
 
+
+  // This function flattens the Outline array in a one-dimensional array and removes broken CAT references
+  function flatten(array) {
+    return array.reduce( (acc, e) => {
+
+      if (e.Ac === undefined) return acc;
+
+      if (Array.isArray(e.children) && e.children.length > 0) {
+        // if the element is an array, fall flatten on it again and then take the returned value and concat it.
+        acc.push({ name: e.name, Ac: e.Ac });
+        return acc.concat(flatten(e.children));
+      } else {
+        // otherwise just concat the value
+        return acc.concat(e);
+      }
+    }, [] ); // initial value for the accumulator is []
+  }
+
+  const newOutline = flatten(outlines);
+
   return isDisabled ? null : (
     <div className="Panel OutlinesPanel" data-element={DataElements.OUTLINES_PANEL}>
       <OutlineContext.Provider
@@ -84,9 +105,14 @@ function OutlinesPanel() {
               <div className="msg">{t('message.noOutlines')}</div>
             </div>
           )}
-          {outlines.map(outline => (
+          {/* {outlines.map(outline => (
             <Outline key={outlineUtils.getOutlineId(outline)} outline={outline} />
+          ))} */}
+
+          {newOutline.map(outline => (
+            <OutlineNew label={outline.name} page={outline.Ac} wholeOutline={newOutline} />
           ))}
+
           {isAddingNewOutline && selectedOutlinePath === null && (
             <OutlineTextInput
               className="marginLeft"

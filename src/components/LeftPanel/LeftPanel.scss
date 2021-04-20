@@ -41,7 +41,8 @@
   .left-panel-container {
     display: flex;
     flex-direction: column;
-    padding: 16px 16px 0px 16px;
+    // padding: 16px 16px 0px 16px;
+    // padding-top: 16px;
 
     @include mobile {
       padding-top: 0px;

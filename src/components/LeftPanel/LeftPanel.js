@@ -64,7 +64,7 @@ const LeftPanel = () => {
     shallowEqual,
   );
 
-  const minWidth = 320;
+  const minWidth = 280;
   const dispatch = useDispatch();
 
   const onDrop = e => {
@@ -100,7 +100,7 @@ const LeftPanel = () => {
       data-element="leftPanel"
     >
       <div className="left-panel-container" style={style}>
-        {isMobile && (
+        {/* {isMobile && (
           <div className="close-container">
             <div
               className="close-icon-container"
@@ -111,7 +111,7 @@ const LeftPanel = () => {
               <Icon glyph="ic_close_black_24px" className="close-icon" />
             </div>
           </div>
-        )}
+        )} */}
         {/* <div className="left-panel-header">
           <LeftPanelTabs />
         </div> */}
@@ -135,7 +135,7 @@ const LeftPanel = () => {
           />
         ))} */}
       </div>
-      {!isTabletAndMobile && (
+      {/* {!isTabletAndMobile && (
         <ResizeBar
           dataElement="leftPanelResizeBar"
           minWidth={minWidth}
@@ -143,7 +143,7 @@ const LeftPanel = () => {
             dispatch(actions.setLeftPanelWidth(_width));
           }}
         />
-      )}
+      )} */}
     </div>
   );
 };

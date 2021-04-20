@@ -64,12 +64,12 @@ const ThumbnailControls = ({ index }) => {
         title="option.thumbnailPanel.rotateCounterClockwise"
         dataElement="thumbRotateCounterClockwise"
       />
-      <Button
+      {/* <Button
         img="icon-delete-line"
         onClick={handleDelete}
         title="option.thumbnailPanel.delete"
         dataElement="thumbDelete"
-      />
+      /> */}
       <Button
         img="icon-header-page-manipulation-page-rotation-clockwise-line"
         onClick={rotateClockwise}

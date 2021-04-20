@@ -109,9 +109,9 @@ const App = ({ removeEventHandlers }) => {
   useEffect(() => {
     const setTabletState = () => {
       // TODO: Use constants
-      dispatch(actions.setLeftPanelWidth(251));
-      dispatch(actions.setNotesPanelWidth(293));
-      dispatch(actions.setSearchPanelWidth(293));
+      dispatch(actions.setLeftPanelWidth(280));
+      dispatch(actions.setNotesPanelWidth(280));
+      dispatch(actions.setSearchPanelWidth(280));
     };
 
     const onBreakpoint = () => {

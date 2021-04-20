@@ -3,9 +3,12 @@ import { withContentRect } from 'react-measure';
 import PropTypes from 'prop-types';
 
 import './SearchResult.scss';
-import VirtualizedList from "react-virtualized/dist/commonjs/List";
-import CellMeasurer, { CellMeasurerCache } from "react-virtualized/dist/commonjs/CellMeasurer";
-import ListSeparator from "components/ListSeparator";
+import VirtualizedList from 'react-virtualized/dist/commonjs/List';
+import CellMeasurer, { CellMeasurerCache } from 'react-virtualized/dist/commonjs/CellMeasurer';
+import ListSeparator from 'components/ListSeparator';
+
+import { useSelector } from 'react-redux';
+import selectors from 'selectors';
 
 const SearchResultListSeparatorPropTypes = {
   currentResultIndex: PropTypes.number.isRequired,
@@ -41,15 +44,28 @@ const SearchResultListItemPropTypes = {
   result: PropTypes.object.isRequired,
   currentResultIndex: PropTypes.number.isRequired,
   activeResultIndex: PropTypes.number.isRequired,
+  searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSearchResultClick: PropTypes.func,
 };
 
 function SearchResultListItem(props) {
-  const { result, currentResultIndex, activeResultIndex, onSearchResultClick } = props;
+  const { result, currentResultIndex, activeResultIndex, onSearchResultClick, searchResults } = props;
   const { ambientStr, resultStrStart, resultStrEnd, resultStr } = result;
   const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
   const searchValue = ambientStr === '' ? resultStr : ambientStr.slice(resultStrStart, resultStrEnd);
   const textAfterSearchValue = ambientStr.slice(resultStrEnd);
+
+  const currentListItem = searchResults[currentResultIndex];
+  const outlines = useSelector(state => selectors.getOutlines(state));
+
+  var deepFlatten = function (array) {
+    return array.reduce(function (r, e) {
+      return Array.isArray(e.children) ? r.push(...deepFlatten(e.children)) : r.push(e.children), r;
+    }, []);
+  };
+
+  console.log('OUTLIBE', deepFlatten(outlines));
+
   return (
     <button
       role="cell"
@@ -60,6 +76,7 @@ function SearchResultListItem(props) {
         }
       }}
     >
+      <p> Headline here2 {currentListItem.pageNum}</p>
       {textBeforeSearchValue}
       <span className="search-value">{searchValue}</span>
       {textAfterSearchValue}
@@ -91,36 +108,34 @@ function SearchResult(props) {
     cellMeasureCache.clearAll();
   }
 
-  const rowRenderer = React.useCallback(function rowRendererCallback(rendererOptions) {
-    const { index, key, parent, style } = rendererOptions;
-    const result = searchResults[index];
-    return (
-      <CellMeasurer
-        cache={cellMeasureCache}
-        columnIndex={0}
-        key={key}
-        parent={parent}
-        rowIndex={index}
-      >
-        {({ registerChild }) => (
-          <div role="row" ref={registerChild} style={style}>
-            <SearchResultListSeparator
-              currentResultIndex={index}
-              searchResults={searchResults}
-              pageLabels={pageLabels}
-              t={t}
-            />
-            <SearchResultListItem
-              result={result}
-              currentResultIndex={index}
-              activeResultIndex={activeResultIndex}
-              onSearchResultClick={onClickResult}
-            />
-          </div>
-        )}
-      </CellMeasurer>
-    );
-  }, [cellMeasureCache, searchResults, activeResultIndex, t, pageLabels]);
+  const rowRenderer = React.useCallback(
+    function rowRendererCallback(rendererOptions) {
+      const { index, key, parent, style } = rendererOptions;
+      const result = searchResults[index];
+      return (
+        <CellMeasurer cache={cellMeasureCache} columnIndex={0} key={key} parent={parent} rowIndex={index}>
+          {({ registerChild }) => (
+            <div role="row" ref={registerChild} style={style}>
+              <SearchResultListSeparator
+                currentResultIndex={index}
+                searchResults={searchResults}
+                pageLabels={pageLabels}
+                t={t}
+              />
+              <SearchResultListItem
+                result={result}
+                searchResults={searchResults}
+                currentResultIndex={index}
+                activeResultIndex={activeResultIndex}
+                onSearchResultClick={onClickResult}
+              />
+            </div>
+          )}
+        </CellMeasurer>
+      );
+    },
+    [cellMeasureCache, searchResults, activeResultIndex, t, pageLabels],
+  );
 
   React.useEffect(() => {
     if (listRef) {
@@ -128,7 +143,8 @@ function SearchResult(props) {
     }
   }, [activeResultIndex]);
 
-  if (height == null) { // eslint-disable-line eqeqeq
+  if (height == null) {
+    // eslint-disable-line eqeqeq
     // VirtualizedList requires width and height of the component which is calculated by withContentRect HOC.
     // On first render when HOC haven't yet set these values, both are undefined, thus having this check here
     // and skip rendering if values are missing
@@ -136,9 +152,7 @@ function SearchResult(props) {
   }
 
   if (searchStatus === 'SEARCH_DONE' && searchResults.length === 0) {
-    return (
-      <div className="info">{t('message.noResults')}</div>
-    );
+    return <div className="info">{t('message.noResults')}</div>;
   }
 
   return (
@@ -167,10 +181,7 @@ function SearchResultWithContentRectHOC(props) {
 }
 SearchResultWithContentRectHOC.propTypes = {
   contentRect: PropTypes.object,
-  measureRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.any })
-  ])
+  measureRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
 };
 
 export default withContentRect('bounds')(SearchResultWithContentRectHOC);

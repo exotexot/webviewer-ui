@@ -22,13 +22,13 @@ export default {
     currentLanguage: 'en',
     disabledElements: {},
     openElements: {
-      header: false,
+      header: true,
       toolsHeader: false,
     },
     panelWidths: {
-      leftPanel: 320,
-      searchPanel: 293,
-      notesPanel: 293,
+      leftPanel: 280,
+      searchPanel: 280,
+      notesPanel: 280,
     },
     documentContainerWidth: null,
     documentContainerHeight: null,
