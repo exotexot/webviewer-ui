@@ -165,7 +165,7 @@
     "processing": "Processing...",
     "searching": "Searching...",
     "searchCommentsPlaceholder": "Search comments",
-    "searchDocumentPlaceholder": "Search document",
+    "searchDocumentPlaceholder": "Search Document",
     "signHere": "Sign here",
     "insertTextHere": "Insert text here",
     "imageSignatureAcceptedFileTypes": "Only {{acceptedFileTypes}} are accepted",
@@ -252,8 +252,8 @@
       "markForRedaction": "Mark for redaction"
     },
     "searchPanel": {
-      "caseSensitive": "Case sensitive",
-      "wholeWordOnly": "Whole word",
+      "caseSensitive": "Match Case",
+      "wholeWordOnly": "Whole Word",
       "wildcard": "Wildcard"
     },
     "toolsOverlay": {
@@ -443,24 +443,8 @@
       "November",
       "December"
     ],
-    "weekdays": [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ],
-    "weekdaysShort": [
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat"
-    ]
+    "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "weekdaysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
   },
   "digitalSignatureModal": {
     "certification": "certification",

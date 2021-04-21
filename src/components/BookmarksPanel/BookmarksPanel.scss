@@ -2,13 +2,13 @@
 
 .BookmarksPanel {
   padding: 0px 0px;
-  padding-top: 16px;
+  // padding-top: 16px;
 
   .bookmarks-panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0px 16px;
+    margin: 16px;
 
     .bookmarks-panel-container {
       display: flex;
@@ -31,7 +31,7 @@
       border-radius: 4px;
       height: 32px;
       cursor: pointer;
-  
+
       &:hover {
         background: var(--primary-button-hover);
       }
@@ -39,7 +39,7 @@
   }
 
   .bookmarks-panel-row {
-    margin: 0 8px 16px 16px;
+    // margin: 0 8px 16px 16px;
 
     .bookmarks-panel-label {
       margin-top: 8px;

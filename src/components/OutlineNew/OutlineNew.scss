@@ -20,21 +20,21 @@ $arrow-size: 19px;
     padding: 0;
     flex: 1;
     border-bottom: 1px solid var(--backgroundDark);
-    
+
     .row {
       // margin: 4px 0;
       margin: 0;
       padding: 0;
       display: inline-flex;
       align-items: center;
-      cursor: pointer;
+      cursor: pointer !important;
       flex: 1;
       padding: 6px;
       justify-content: space-between;
-      
+
       // border-bottom: 1px solid red;
     }
-      
+
     .CustomButton {
       width: auto;
       height: auto;
@@ -58,6 +58,7 @@ $arrow-size: 19px;
 
     &.hover {
       background: var(--backgroundLight);
+      cursor: pointer !important;
     }
 
     &.hover > .editOutlineButton {
@@ -74,6 +75,7 @@ $arrow-size: 19px;
 
     &:not(.selected):hover {
       background: var(--backgroundLight);
+      cursor: pointer !important;
     }
 
     &:hover > .editOutlineButton {

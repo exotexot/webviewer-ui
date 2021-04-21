@@ -10,27 +10,19 @@ import './OutlineNew.scss';
 const propTypes = {
   label: PropTypes.string.isRequired,
   page: PropTypes.string.isRequired,
-  wholeOutline: PropTypes.object.isRequired
+  wholeOutline: PropTypes.object,
+  activeMode: PropTypes.string,
 };
 
-function OutlineNew({ label, page, wholeOutline }) {
-
+function OutlineNew({ label, page, wholeOutline, activeMode = 'page' }) {
   const handleOutlineClick = useCallback(
-    function() {
+    function () {
       core.setCurrentPage(page);
     },
     [page],
   );
 
-  const [
-    currentPage,
-  ] = useSelector(
-    state => [
-      selectors.getCurrentPage(state),
-    ],
-    shallowEqual,
-  );
-
+  const [currentPage] = useSelector(state => [selectors.getCurrentPage(state)], shallowEqual);
   const closestSmaller = (outline, page, returnIndex = false) => {
     let pages = [];
 
@@ -46,16 +38,12 @@ function OutlineNew({ label, page, wholeOutline }) {
     return returnIndex ? index : closest;
   };
 
-
   const [activeChapter, setActiveChapter] = React.useState(0);
   React.useEffect(() => {
     let isActive = true;
 
-    if (isActive) {
-      const closest = closestSmaller(
-        wholeOutline,
-        currentPage
-      );
+    if (isActive && wholeOutline !== undefined) {
+      const closest = closestSmaller(wholeOutline, currentPage);
 
       setActiveChapter(closest);
     }
@@ -65,24 +53,19 @@ function OutlineNew({ label, page, wholeOutline }) {
     };
   }, [currentPage]);
 
-  
+  const mode = activeMode === 'chapter' ? activeChapter === page : currentPage === page;
+
   return (
     <div className="OutlineNew">
       <div className={classNames({ content: true, editable: false })}>
-        
-        <button 
-          className="CustomButton"
-          onClick={handleOutlineClick}
-        >
+        <button className="CustomButton" onClick={handleOutlineClick}>
           <div className={classNames({ row: true })}>
-            {label} 
-            <span className={classNames({ indicator: true, active: activeChapter === page })}>{page}</span>
+            {label}
+            <span className={classNames({ indicator: true, active: mode })}>{page}</span>
           </div>
         </button>
-       
       </div>
     </div>
-
   );
 }
 

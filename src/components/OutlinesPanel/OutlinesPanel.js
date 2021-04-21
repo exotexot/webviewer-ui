@@ -64,11 +64,9 @@ function OutlinesPanel() {
     });
   }
 
-
   // This function flattens the Outline array in a one-dimensional array and removes broken CAT references
   function flatten(array) {
-    return array.reduce( (acc, e) => {
-
+    return array.reduce((acc, e) => {
       if (e.Ac === undefined) return acc;
 
       if (Array.isArray(e.children) && e.children.length > 0) {
@@ -79,7 +77,7 @@ function OutlinesPanel() {
         // otherwise just concat the value
         return acc.concat(e);
       }
-    }, [] ); // initial value for the accumulator is []
+    }, []); // initial value for the accumulator is []
   }
 
   const newOutline = flatten(outlines);
@@ -110,7 +108,7 @@ function OutlinesPanel() {
           ))} */}
 
           {newOutline.map(outline => (
-            <OutlineNew label={outline.name} page={outline.Ac} wholeOutline={newOutline} />
+            <OutlineNew label={outline.name} page={outline.Ac} wholeOutline={newOutline} activeMode="chapter" />
           ))}
 
           {isAddingNewOutline && selectedOutlinePath === null && (

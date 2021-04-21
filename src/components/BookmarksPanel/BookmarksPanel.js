@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next';
 
 import Bookmark from 'components/Bookmark';
 import EditingBookmark from 'components/Bookmark/EditingBookmark';
+import OutlineNew from 'components/OutlineNew';
 import Button from 'components/Button';
 
 import actions from 'actions';
@@ -67,8 +68,11 @@ class BookmarksPanel extends React.PureComponent {
         <div className="bookmarks-panel-row">
           {pageIndexes.map(pageIndex => (
             <React.Fragment>
-              <div className="bookmarks-panel-label">{`${t('component.bookmarkPage')} ${pageLabels[pageIndex]}`}</div>
-              <Bookmark text={bookmarks[pageIndex]} pageIndex={pageIndex} />
+              {/* <div className="bookmarks-panel-label">{`${t('component.bookmarkPage')} ${pageLabels[pageIndex]}`}</div> */}
+              <OutlineNew label={bookmarks[pageIndex]} page={pageIndex + 1} activeMode="page" />
+              {/* <OutlineNew label={'SPAST'} page={3} activeMode="page" /> */}
+
+              {/* <Bookmark text={bookmarks[pageIndex]} pageIndex={pageIndex} /> */}
             </React.Fragment>
           ))}
         </div>

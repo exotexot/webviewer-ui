@@ -59,8 +59,7 @@ function SearchResultListItem(props) {
   const outlines = useSelector(state => selectors.getOutlines(state));
 
   function flatten(array) {
-    return array.reduce( (acc, e) => {
-
+    return array.reduce((acc, e) => {
       if (e.Ac === undefined) {
         return acc;
       }
@@ -73,16 +72,14 @@ function SearchResultListItem(props) {
         // otherwise just concat the value
         return acc.concat(e);
       }
-    }, [] ); // initial value for the accumulator is []
+    }, []); // initial value for the accumulator is []
   }
 
   const newOutline = flatten(outlines);
 
-
   // Finds chapter titles based on Outline Information.
   // This is relevant for the search module
   const findChapterTitle = (outline, page) => {
-
     if (outline.length < 1) {
       return false;
     }
@@ -104,7 +101,6 @@ function SearchResultListItem(props) {
       .reverse()
       .find(el => el.Ac === chapterNumber);
 
-
     return chapter.name;
     // return "spas12t"
   };
@@ -122,6 +118,7 @@ function SearchResultListItem(props) {
       }}
     >
       <p> {title}</p>
+      <p> {currentListItem.pageNum}</p>
       {textBeforeSearchValue}
       <span className="search-value">{searchValue}</span>
       {textAfterSearchValue}
@@ -161,12 +158,12 @@ function SearchResult(props) {
         <CellMeasurer cache={cellMeasureCache} columnIndex={0} key={key} parent={parent} rowIndex={index}>
           {({ registerChild }) => (
             <div role="row" ref={registerChild} style={style}>
-              <SearchResultListSeparator
+              {/* <SearchResultListSeparator
                 currentResultIndex={index}
                 searchResults={searchResults}
                 pageLabels={pageLabels}
                 t={t}
-              />
+              /> */}
               <SearchResultListItem
                 result={result}
                 searchResults={searchResults}
