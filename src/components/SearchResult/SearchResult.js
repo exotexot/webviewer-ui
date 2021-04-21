@@ -6,8 +6,8 @@ import './SearchResult.scss';
 import VirtualizedList from 'react-virtualized/dist/commonjs/List';
 import CellMeasurer, { CellMeasurerCache } from 'react-virtualized/dist/commonjs/CellMeasurer';
 import ListSeparator from 'components/ListSeparator';
-
-import { useSelector } from 'react-redux';
+import classNames from 'classnames';
+import { useSelector, shallowEqual } from 'react-redux';
 import selectors from 'selectors';
 
 const SearchResultListSeparatorPropTypes = {
@@ -46,6 +46,7 @@ const SearchResultListItemPropTypes = {
   activeResultIndex: PropTypes.number.isRequired,
   searchResults: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSearchResultClick: PropTypes.func,
+  outline: PropTypes.array,
 };
 
 function SearchResultListItem(props) {
@@ -54,37 +55,54 @@ function SearchResultListItem(props) {
   const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
   const searchValue = ambientStr === '' ? resultStr : ambientStr.slice(resultStrStart, resultStrEnd);
   const textAfterSearchValue = ambientStr.slice(resultStrEnd);
+  const currentListItem = searchResults[currentResultIndex];
+
+  const [currentPage] = useSelector(state => [selectors.getCurrentPage(state)], shallowEqual);
+
+  return (
+    <button
+      role="cell"
+      className={classNames({ SearchResult: true, selected: currentResultIndex === activeResultIndex })}
+      // className={`SearchResult ${currentResultIndex === activeResultIndex ? 'selected' : ''}`}
+      onClick={() => {
+        if (onSearchResultClick) {
+          onSearchResultClick(currentResultIndex, result);
+        }
+      }}
+    >
+      <div className="row">
+        <p>
+          {textBeforeSearchValue}
+          <span className="search-value">{searchValue}</span>
+          {textAfterSearchValue}
+        </p>
+
+        <span className={classNames({ indicator: true, active: currentPage === currentListItem.pageNum })}>
+          {currentListItem.pageNum}
+        </span>
+      </div>
+    </button>
+  );
+}
+SearchResultListItem.propTypes = SearchResultListItemPropTypes;
+
+function SearchResultListItemMulti(props) {
+  const { result, currentResultIndex, activeResultIndex, onSearchResultClick, searchResults, outline } = props;
+  const { ambientStr, resultStrStart, resultStrEnd, resultStr } = result;
+  const textBeforeSearchValue = ambientStr.slice(0, resultStrStart);
+  const searchValue = ambientStr === '' ? resultStr : ambientStr.slice(resultStrStart, resultStrEnd);
+  const textAfterSearchValue = ambientStr.slice(resultStrEnd);
 
   const currentListItem = searchResults[currentResultIndex];
-  const outlines = useSelector(state => selectors.getOutlines(state));
-
-  function flatten(array) {
-    return array.reduce((acc, e) => {
-      if (e.Ac === undefined) {
-        return acc;
-      }
-
-      if (Array.isArray(e.children) && e.children.length > 0) {
-        // if the element is an array, fall flatten on it again and then take the returned value and concat it.
-        acc.push({ name: e.name, Ac: e.Ac });
-        return acc.concat(flatten(e.children));
-      } else {
-        // otherwise just concat the value
-        return acc.concat(e);
-      }
-    }, []); // initial value for the accumulator is []
-  }
-
-  const newOutline = flatten(outlines);
 
   // Finds chapter titles based on Outline Information.
   // This is relevant for the search module
-  const findChapterTitle = (outline, page) => {
-    if (outline.length < 1) {
+  const findChapterTitle = (outl, page) => {
+    if (outl.length < 1) {
       return false;
     }
 
-    const numbers = outline.map(a => a.Ac);
+    const numbers = outl.map(a => a.Ac);
     const chapterNumber = numbers.reduce((a, b) => {
       let aDiff = Math.abs(a - page);
       let bDiff = Math.abs(b - page);
@@ -96,7 +114,7 @@ function SearchResultListItem(props) {
       }
     });
 
-    const chapter = outline
+    const chapter = outl
       .slice()
       .reverse()
       .find(el => el.Ac === chapterNumber);
@@ -105,27 +123,36 @@ function SearchResultListItem(props) {
     // return "spas12t"
   };
 
-  const title = findChapterTitle(newOutline, currentListItem.pageNum);
+  const title = findChapterTitle(outline, currentListItem.pageNum);
+
+  const [currentPage] = useSelector(state => [selectors.getCurrentPage(state)], shallowEqual);
 
   return (
     <button
       role="cell"
-      className={`SearchResult ${currentResultIndex === activeResultIndex ? 'selected' : ''}`}
+      className={classNames({ SearchResult: true, selected: currentResultIndex === activeResultIndex })}
+      // className={`SearchResult ${currentResultIndex === activeResultIndex ? 'selected' : ''}`}
       onClick={() => {
         if (onSearchResultClick) {
           onSearchResultClick(currentResultIndex, result);
         }
       }}
     >
-      <p> {title}</p>
-      <p> {currentListItem.pageNum}</p>
+      <div className="row paddingBot">
+        <p className="multiChapterName"> {title} </p>
+
+        <span className={classNames({ indicator: true, active: currentPage === currentListItem.pageNum })}>
+          {currentListItem.pageNum}
+        </span>
+      </div>
+
       {textBeforeSearchValue}
       <span className="search-value">{searchValue}</span>
       {textAfterSearchValue}
     </button>
   );
 }
-SearchResultListItem.propTypes = SearchResultListItemPropTypes;
+SearchResultListItemMulti.propTypes = SearchResultListItemPropTypes;
 
 const SearchResultPropTypes = {
   width: PropTypes.number,
@@ -136,10 +163,11 @@ const SearchResultPropTypes = {
   t: PropTypes.func.isRequired,
   onClickResult: PropTypes.func,
   pageLabels: PropTypes.arrayOf(PropTypes.any),
+  outline: PropTypes.array,
 };
 
 function SearchResult(props) {
-  const { height, searchStatus, searchResults, activeResultIndex, t, onClickResult, pageLabels } = props;
+  const { height, searchStatus, searchResults, activeResultIndex, t, onClickResult, pageLabels, outline } = props;
   const cellMeasureCache = React.useMemo(() => {
     return new CellMeasurerCache({ defaultHeight: 50, fixedWidth: true });
   }, []);
@@ -164,13 +192,24 @@ function SearchResult(props) {
                 pageLabels={pageLabels}
                 t={t}
               /> */}
-              <SearchResultListItem
-                result={result}
-                searchResults={searchResults}
-                currentResultIndex={index}
-                activeResultIndex={activeResultIndex}
-                onSearchResultClick={onClickResult}
-              />
+              {outline.length === 0 ? (
+                <SearchResultListItem
+                  result={result}
+                  searchResults={searchResults}
+                  currentResultIndex={index}
+                  activeResultIndex={activeResultIndex}
+                  onSearchResultClick={onClickResult}
+                />
+              ) : (
+                <SearchResultListItemMulti
+                  result={result}
+                  searchResults={searchResults}
+                  currentResultIndex={index}
+                  activeResultIndex={activeResultIndex}
+                  onSearchResultClick={onClickResult}
+                  outline={outline}
+                />
+              )}
             </div>
           )}
         </CellMeasurer>

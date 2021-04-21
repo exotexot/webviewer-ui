@@ -16,7 +16,7 @@
   position: fixed;
   left: 0px;
   transition: transform 0.3s ease-in-out;
-  max-width: calc(100% - 16px);
+  // max-width: calc(100% - 16px);
   @include mobile {
     max-width: 100%;
   }

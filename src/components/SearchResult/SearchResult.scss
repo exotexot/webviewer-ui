@@ -4,25 +4,70 @@
   @include button-reset;
   border: solid transparent 1px;
   display: block;
-  width: calc(100% - 4px);
+  // width: calc(100% - 4px);
+  width: 100%;
   text-align: left;
+  // justify-content: space-between;
 
   cursor: pointer;
-  border-radius: 4px;
-  box-shadow: 0px 0px 3px 0px var(--box-shadow);
-  padding: 10px 8px;
-  margin-left: 2px;
-  margin-bottom: 8px;
-  background: var(--component-background);
+  // border-radius: 4px;
+  // box-shadow: 0px 0px 3px 0px var(--box-shadow);
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 10px;
+  // margin-left: 2px;
+  // margin-bottom: 8px;
+  background: none;
   word-break: break-all;
+  border-bottom: 1px solid var(--backgroundDark);
 
   &.selected {
-    border: 1px solid var(--focus-border);
+    // border: 1px solid var(--color-theme-primary);
+    background: var(--backgroundDark);
     box-shadow: none;
   }
 
+  .row {
+    display: flex;
+    justify-content: space-between;
+
+    &.paddingBot {
+      padding-bottom: 5px;
+    }
+  }
+
+  p {
+    padding: 0;
+    margin: 0;
+    padding-right: 10px;
+  }
+
+  .multiChapterName {
+    color: var(--textSofter);
+    width: 225px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .search-value {
-    background: var(--yellow-1);
+    background: var(--color-theme-primary);
+    color: black;
+    padding: 0 1px;
     word-break: break-all;
+  }
+
+  .indicator {
+    background: var(--backgroundLight);
+    padding: 0 4px;
+    max-height: 16px;
+    border-radius: 7px;
+    color: var(--outline-color);
+    // height: 18px;
+  }
+
+  .active {
+    background: var(--color-theme-primary);
+    color: var(--outline-color);
   }
 }

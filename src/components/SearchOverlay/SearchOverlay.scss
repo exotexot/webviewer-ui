@@ -11,7 +11,8 @@
   border-radius: 0px;
   background: transparent;
   visibility: visible !important;
-  padding-right: 18px;
+  // padding-right: 18px;
+  padding: 0 10px;
   flex-grow: 0;
 
   .input-container {
@@ -68,7 +69,7 @@
     }
   }
 
-  .divider{
+  .divider {
     height: 1px;
     width: 100%;
     background: var(--divider);

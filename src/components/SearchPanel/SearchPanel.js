@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
@@ -10,6 +10,9 @@ import DataElementWrapper from 'components/DataElementWrapper';
 
 import './SearchPanel.scss';
 import useSearch from 'hooks/useSearch';
+
+import { useSelector } from 'react-redux';
+import selectors from 'selectors';
 
 const propTypes = {
   isOpen: PropTypes.bool,
@@ -27,6 +30,27 @@ function SearchPanel(props) {
 
   const { t } = useTranslation();
   const { searchStatus, searchResults, activeSearchResultIndex } = useSearch();
+
+  const outlines = useSelector(state => selectors.getOutlines(state));
+
+  function flatten(array) {
+    return array.reduce((acc, e) => {
+      if (e.Ac === undefined) {
+        return acc;
+      }
+
+      if (Array.isArray(e.children) && e.children.length > 0) {
+        // if the element is an array, fall flatten on it again and then take the returned value and concat it.
+        acc.push({ name: e.name, Ac: e.Ac });
+        return acc.concat(flatten(e.children));
+      } else {
+        // otherwise just concat the value
+        return acc.concat(e);
+      }
+    }, []); // initial value for the accumulator is []
+  }
+
+  const newOutline = flatten(outlines);
 
   const onCloseButtonClick = React.useCallback(
     function onCloseButtonClick() {
@@ -72,6 +96,7 @@ function SearchPanel(props) {
         activeResultIndex={activeSearchResultIndex}
         onClickResult={onClickResult}
         pageLabels={pageLabels}
+        outline={newOutline}
       />
     </DataElementWrapper>
   );
