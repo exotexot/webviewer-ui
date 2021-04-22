@@ -341,8 +341,8 @@
     },
     "thumbnailPanel": {
       "delete": "Delete",
-      "rotateClockwise": "Clockwise",
-      "rotateCounterClockwise": "Counterclockwise"
+      "rotateClockwise": "Rotate Right (CTRL R)",
+      "rotateCounterClockwise": "Rotate Left (CTRL L)"
     },
     "richText": {
       "bold": "Bold",

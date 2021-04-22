@@ -25,7 +25,7 @@ const Thumbnail = ({
   isReaderMode,
   dispatch,
   actions,
-  isMobile
+  isMobile,
 }) => {
   const thumbSize = thumbnailSize ? Number(thumbnailSize) : 150;
 
@@ -150,6 +150,8 @@ const Thumbnail = ({
 
   const isActive = currentPage === index + 1;
   const pageLabel = pageLabels[index];
+
+  console.log('CURPAG', core.getCurrentPage());
 
   return (
     <div

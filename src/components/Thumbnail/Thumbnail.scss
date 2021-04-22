@@ -10,14 +10,20 @@
 
   &.active {
     .container {
+      // background: red !important;
+
       .page-image {
-        border: 2px solid var(--focus-border);
-        box-shadow: none;
-        // so that thumbnail does not resize when putting a border on max-width max height canvas
-        box-sizing: content-box;
+        // border: 2px solid var(--focus-border);
+        // box-shadow: none;
+        // // so that thumbnail does not resize when putting a border on max-width max height canvas
+        // box-sizing: content-box;
       }
     }
 
+    .page-label {
+      // color: var(--focus-border) !important;
+      background: var(--color-theme-primary);
+    }
   }
 
   .container {
@@ -30,10 +36,11 @@
     cursor: pointer;
 
     .page-image {
-      box-shadow: 0px 0px 3px 0px var(--box-shadow);
+      // box-shadow: 0px 0px 3px 0px var(--box-shadow);
     }
 
-    .annotation-image, .page-image {
+    .annotation-image,
+    .page-image {
       position: absolute;
       left: 50%;
       top: 50%;
@@ -42,30 +49,41 @@
   }
 
   .page-label {
-    margin-top: 11px;
+    // margin-top: 11px;
+    position: absolute;
+    bottom: 30px;
+    background: var(--backgroundLight);
+    padding: 0 5px;
+    border-radius: 8px;
+    color: white;
   }
 
-  &.selected {
-    $selected-icon-size: 16px;
-    $selected-border-size: 3px;
+  // &.selected {
+  //   $selected-icon-size: 16px;
+  //   $selected-border-size: 0px;
 
-    .container {
-      .thumbnail::before {
-        color: white;
-        background: var(--focus-border);
-        width: $selected-icon-size;
-        height: $selected-icon-size;
-        position: absolute;
-        z-index: 10;
-      }
-    }
+  //   .container {
+  //     .thumbnail::before {
+  //       color: white;
+  //       background: var(--color-theme-primary);
+  //       width: $selected-icon-size;
+  //       height: $selected-icon-size;
+  //       position: absolute;
+  //       z-index: 10;
+  //     }
+  //   }
 
-    .page-label {
-      color: var(--focus-border) !important;
-    }
+  //   .page-label {
+  //     // color: var(--focus-border) !important;
+  //     // background: blue;
+  //   }
 
-    canvas:first-of-type {
-      border: solid var(--focus-border) $selected-border-size !important;
-    }
-  }
+  //   .active {
+  //     background: var(--color-theme-primary);
+  //   }
+
+  //   canvas:first-of-type {
+  //     border: solid var(--focus-border) $selected-border-size !important;
+  //   }
+  // }
 }

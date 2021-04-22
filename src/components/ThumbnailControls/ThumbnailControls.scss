@@ -6,6 +6,12 @@
   text-align: center;
   z-index: 2;
   margin-top: 5px;
+  position: absolute;
+  top: 35%;
+  left: 10%;
+  // background: red;
+  width: 80%;
+  justify-content: space-between;
 
   .Button {
     height: 32px;

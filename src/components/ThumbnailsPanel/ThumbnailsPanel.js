@@ -65,9 +65,11 @@ const ThumbnailsPanel = () => {
   const [draggingOverPageIndex, setDraggingOverPageIndex] = useState(null);
   const [isDraggingToPreviousPage, setDraggingToPreviousPage] = useState(false);
   const [allowPageOperations, setAllowPageOperations] = useState(true);
-  const [numberOfColumns, setNumberOfColumns] = useState(1);
+  // const [numberOfColumns, setNumberOfColumns] = useState(1);
+  const numberOfColumns = 1;
 
-  const [thumbnailSize, setThumbnailSize] = useState(150);
+  // const [thumbnailSize, setThumbnailSize] = useState(150);
+  const thumbnailSize = 150;
 
   const dispatch = useDispatch();
 
@@ -259,6 +261,16 @@ const ThumbnailsPanel = () => {
     };
   }, [thumbnailSize, numberOfColumns]);
 
+  // useEffect(() => {
+  //   listRef.current.scrollToRow(5);
+
+  //   return () => {
+  //     // core.removeEventListener('pageNumberUpdated', onPageNumberUpdated);
+  //     // core.removeEventListener('annotationChanged', onAnnotationChanged);
+  //     // core.removeEventListener('annotationHidden', onAnnotationChanged);
+  //   };
+  // }, []);
+
   useEffect(() => {
     dispatch(actions.setSelectedPageThumbnails([]));
   }, [isReaderMode]);
@@ -434,11 +446,11 @@ const ThumbnailsPanel = () => {
   const onPanelResize = ({ bounds }) => {
     setHeight(bounds.height);
     setWidth(bounds.width);
-    setNumberOfColumns(Math.min(3, Math.max(1, Math.floor(bounds.width / thumbnailSize))));
+    // setNumberOfColumns(Math.min(3, Math.max(1, Math.floor(bounds.width / thumbnailSize))));
   };
 
   const updateNumberOfColumns = () => {
-    setNumberOfColumns(Math.min(3, Math.max(1, Math.floor(width / thumbnailSize))));
+    // setNumberOfColumns(Math.min(3, Math.max(1, Math.floor(width / thumbnailSize))));
   };
 
   const thumbnailHeight = isThumbnailControlDisabled ? Number(thumbnailSize) + 50 : Number(thumbnailSize) + 80;
@@ -493,7 +505,7 @@ const ThumbnailsPanel = () => {
                 ref={listRef}
                 height={height}
                 width={width}
-                rowHeight={thumbnailHeight}
+                rowHeight={180}
                 // Round it to a whole number because React-Virtualized list library doesn't round it for us and throws errors when rendering non whole number rows
                 // use ceiling rather than floor so that an extra row can be created in case the items can't be evenly distributed between rows
                 rowCount={Math.ceil(totalPages / numberOfColumns)}
