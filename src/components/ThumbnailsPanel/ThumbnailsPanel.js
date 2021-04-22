@@ -20,9 +20,9 @@ import './ThumbnailsPanel.scss';
 
 const dataTransferWebViewerFrameKey = 'dataTransferWebViewerFrame';
 
-const ZOOM_RANGE_MIN = "100";
-const ZOOM_RANGE_MAX = "1000";
-const ZOOM_RANGE_STEP = "50";
+const ZOOM_RANGE_MIN = '100';
+const ZOOM_RANGE_MAX = '1000';
+const ZOOM_RANGE_STEP = '50';
 
 const ThumbnailsPanel = () => {
   const [
@@ -172,7 +172,7 @@ const ThumbnailsPanel = () => {
       } else {
         setAllowPageOperations(false);
       }
-  
+
       dispatch(actions.setSelectedPageThumbnails([]));
     };
 
@@ -187,7 +187,6 @@ const ThumbnailsPanel = () => {
     core.addEventListener('finishedRendering', onFinishedRendering);
     core.addEventListener('documentLoaded', onDocumentLoaded);
     core.addEventListener('pageComplete', onPageComplete);
-    
 
     // The document might have already been loaded before this component is mounted.
     // If document is already loaded, call 'onDocumentLoaded()' manually to update the state properly.
@@ -257,8 +256,7 @@ const ThumbnailsPanel = () => {
       core.removeEventListener('pageNumberUpdated', onPageNumberUpdated);
       core.removeEventListener('annotationChanged', onAnnotationChanged);
       core.removeEventListener('annotationHidden', onAnnotationChanged);
-    }
-
+    };
   }, [thumbnailSize, numberOfColumns]);
 
   useEffect(() => {
@@ -266,8 +264,8 @@ const ThumbnailsPanel = () => {
   }, [isReaderMode]);
 
   // if disabled or is not open return
-  if(isDisabled || !isOpen){
-    return null
+  if (isDisabled || !isOpen) {
+    return null;
   }
 
   const onDragEnd = () => {

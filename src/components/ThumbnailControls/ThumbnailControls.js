@@ -23,11 +23,13 @@ const ThumbnailControls = ({ index }) => {
   const dispatch = useDispatch();
 
   const rotateClockwise = () => {
-    core.rotatePages([index + 1], window.CoreControls.PageRotation.e_90);
+    // core.rotatePages([index + 1], window.CoreControls.PageRotation.e_90);
+    core.rotateClockwise(index + 1);
   };
 
   const rotateCounterClockwise = () => {
-    core.rotatePages([index + 1], window.CoreControls.PageRotation.e_270);
+    // core.rotatePages([index + 1], window.CoreControls.PageRotation.e_270);
+    core.rotateCounterClockwise(index + 1);
   };
 
   const handleDelete = () => {

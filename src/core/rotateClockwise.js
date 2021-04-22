@@ -5,6 +5,6 @@
  * @fires zoomUpdated on DocumentViewer
  * @see https://www.pdftron.com/api/web/CoreControls.DocumentViewer.html#event:zoomUpdated__anchor
  */
-export default () => {
-  window.docViewer.rotateClockwise();
+export default page => {
+  window.docViewer.rotateClockwise(page);
 };
