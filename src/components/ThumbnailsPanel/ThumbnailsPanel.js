@@ -261,16 +261,6 @@ const ThumbnailsPanel = () => {
     };
   }, [thumbnailSize, numberOfColumns]);
 
-  // useEffect(() => {
-  //   listRef.current.scrollToRow(5);
-
-  //   return () => {
-  //     // core.removeEventListener('pageNumberUpdated', onPageNumberUpdated);
-  //     // core.removeEventListener('annotationChanged', onAnnotationChanged);
-  //     // core.removeEventListener('annotationHidden', onAnnotationChanged);
-  //   };
-  // }, []);
-
   useEffect(() => {
     dispatch(actions.setSelectedPageThumbnails([]));
   }, [isReaderMode]);
