@@ -13,11 +13,11 @@ const propTypes = {
   page: PropTypes.string.isRequired,
   wholeOutline: PropTypes.object,
   activeMode: PropTypes.string,
-  editable: PropTypes.bool,
+  deletable: PropTypes.bool,
   removeBookmark: PropTypes.func,
 };
 
-function OutlineNew({ label, page, wholeOutline, activeMode = 'page', editable = false, removeBookmark }) {
+function OutlineNew({ label, page, wholeOutline, activeMode = 'page', deletable = false, removeBookmark }) {
   const handleOutlineClick = useCallback(
     function () {
       core.setCurrentPage(page);
@@ -66,9 +66,9 @@ function OutlineNew({ label, page, wholeOutline, activeMode = 'page', editable =
   const mode = activeMode === 'chapter' ? activeChapter === page : currentPage === page;
 
   return (
-    <div className="OutlineNew">
+    <div className={classNames({ OutlineNew: true, deletable: deletable === true })}>
       <div className={classNames({ content: true, editable: false })}>
-        {editable && (
+        {deletable && (
           <button className="delete" onClick={handleDeleteClick}>
             <div className="icon-container">
               <Icon glyph="icon-close" />
@@ -76,7 +76,7 @@ function OutlineNew({ label, page, wholeOutline, activeMode = 'page', editable =
           </button>
         )}
 
-        <button className="CustomButton" onClick={handleOutlineClick}>
+        <button className="CustomButton notEditable" onClick={handleOutlineClick}>
           <div className={classNames({ row: true })}>
             {label}
             <span className={classNames({ indicator: true, active: mode })}>{page}</span>

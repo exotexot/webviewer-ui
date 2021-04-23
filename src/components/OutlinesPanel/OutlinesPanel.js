@@ -108,7 +108,13 @@ function OutlinesPanel() {
           ))} */}
 
           {newOutline.map(outline => (
-            <OutlineNew label={outline.name} page={outline.Ac} wholeOutline={newOutline} activeMode="chapter" />
+            <OutlineNew
+              label={outline.name}
+              page={outline.Ac}
+              wholeOutline={newOutline}
+              activeMode="chapter"
+              deletable={false}
+            />
           ))}
 
           {isAddingNewOutline && selectedOutlinePath === null && (

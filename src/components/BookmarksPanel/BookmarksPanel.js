@@ -76,7 +76,7 @@ class BookmarksPanel extends React.PureComponent {
               page={pageIndex + 1}
               activeMode="page"
               removeBookmark={removeBookmark}
-              editable
+              deletable={true}
             />
             //  <Bookmark text={bookmarks[pageIndex]} pageIndex={pageIndex} />
           ))}

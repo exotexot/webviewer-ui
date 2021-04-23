@@ -12,14 +12,23 @@ import selectors from 'selectors';
 import './SettingsPanel.scss';
 
 function SettingsPanel() {
-  const isDisabled = useSelector(state => selectors.isElementDisabled(state, 'settingsPanel'));
-  // const outlines = useSelector(state => selectors.getOutlines(state));
-  // const [t] = useTranslation();
-  // const dispatch = useDispatch();
+  const outlines = useSelector(state => selectors.getOutlines(state));
 
-  return isDisabled ? null : (
+  const [mul, setMul] = React.useState(1);
+
+  return (
     <div className="Panel SettingsPanel" data-element="settingsPanel">
       <p> Settings </p>
+
+      {/* <button
+        onClick={() => {
+          window.utils.setCanvasMultiplier(mul);
+          setMul(mul + 1);
+          alert(`test  ${mul}`);
+        }}
+      >
+        <p>Test</p>
+      </button> */}
     </div>
   );
 }

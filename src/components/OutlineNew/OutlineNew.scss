@@ -36,12 +36,13 @@ $arrow-size: 19px;
     }
   }
 
-  &:hover .delete {
+  &.deletable:hover .delete {
     display: flex;
   }
 
-  &:hover .row {
+  &.deletable:hover .row {
     padding-left: 0px !important;
+    // background: red;
   }
 
   .content {
