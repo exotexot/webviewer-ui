@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -24,6 +25,7 @@ class BookmarksPanel extends React.PureComponent {
   static propTypes = {
     bookmarks: PropTypes.object,
     addBookmark: PropTypes.func.isRequired,
+    removeBookmark: PropTypes.func,
     currentPage: PropTypes.number.isRequired,
     isDisabled: PropTypes.bool,
     t: PropTypes.func.isRequired,
@@ -31,13 +33,14 @@ class BookmarksPanel extends React.PureComponent {
   };
 
   render() {
-    const { isDisabled, bookmarks, addBookmark, currentPage, t, pageLabels } = this.props;
+    const { isDisabled, bookmarks, addBookmark, removeBookmark, currentPage, t, pageLabels } = this.props;
 
     if (isDisabled) {
       return null;
     }
 
     const pageIndexes = Object.keys(bookmarks).map(pageIndex => parseInt(pageIndex, 10));
+
     return (
       <div className="Panel BookmarksPanel" data-element="leftBookmarksPanel">
         {this.state.isAdding ? (
@@ -54,7 +57,7 @@ class BookmarksPanel extends React.PureComponent {
             }}
           />
         ) : (
-          <div className="bookmarks-panel-header ">
+          <div className="bookmarks-panel-header">
             <Button
               dataElement="newBookmarkButton"
               className="bookmarks-panel-button"
@@ -67,13 +70,15 @@ class BookmarksPanel extends React.PureComponent {
         )}
         <div className="bookmarks-panel-row">
           {pageIndexes.map(pageIndex => (
-            <React.Fragment>
-              {/* <div className="bookmarks-panel-label">{`${t('component.bookmarkPage')} ${pageLabels[pageIndex]}`}</div> */}
-              <OutlineNew label={bookmarks[pageIndex]} page={pageIndex + 1} activeMode="page" />
-              {/* <OutlineNew label={'SPAST'} page={3} activeMode="page" /> */}
-
-              {/* <Bookmark text={bookmarks[pageIndex]} pageIndex={pageIndex} /> */}
-            </React.Fragment>
+            // <div className="bookmarks-panel-label">{`${t('component.bookmarkPage')} ${pageLabels[pageIndex]}`}</div> */}
+            <OutlineNew
+              label={bookmarks[pageIndex]}
+              page={pageIndex + 1}
+              activeMode="page"
+              removeBookmark={removeBookmark}
+              editable
+            />
+            //  <Bookmark text={bookmarks[pageIndex]} pageIndex={pageIndex} />
           ))}
         </div>
       </div>

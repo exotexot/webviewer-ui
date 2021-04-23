@@ -11,10 +11,44 @@ $arrow-size: 19px;
   // align-items: flex-start;
   margin: 0;
   padding: 0;
+  // background: green;
+
+  .delete {
+    display: none;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    // background-color: red;
+    background: none;
+    border: 0;
+    // background: red;
+
+    .icon-container {
+      margin: 0;
+      padding: 0;
+      width: 28px;
+      height: 20px;
+      // margin-top: 6px;
+      margin-left: 4px;
+      padding-top: 5px;
+      // background: yellow;
+    }
+  }
+
+  &:hover .delete {
+    display: flex;
+  }
+
+  &:hover .row {
+    padding-left: 0px !important;
+  }
 
   .content {
+    // background: orange;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     position: relative;
     margin: 0;
     padding: 0;
@@ -25,12 +59,14 @@ $arrow-size: 19px;
       // margin: 4px 0;
       margin: 0;
       padding: 0;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       cursor: pointer !important;
       flex: 1;
-      padding: 6px;
+      padding: 6px 15px;
+      // padding-left: 0px;
       justify-content: space-between;
+      // background: pink;
 
       // border-bottom: 1px solid red;
     }
@@ -38,16 +74,19 @@ $arrow-size: 19px;
     .CustomButton {
       width: auto;
       height: auto;
+      margin: 0;
+      padding: 0;
       text-align: left;
       color: var(--outline-color);
       border: 0;
       display: flex;
+      flex: 1;
       background: none !important;
     }
 
     .indicator {
       background: var(--backgroundLight);
-      padding: 1px 3px;
+      padding: 1px 5px;
       border-radius: 7px;
       color: var(--outline-color);
     }

@@ -19,27 +19,22 @@ export const getSelectedStamp = state => {
   return selectedStamp;
 };
 export const getSavedSignatures = state => state.viewer.savedSignatures;
-export const getDisplayedSignatures = state => state.viewer.savedSignatures.filter(state.viewer.displayedSignaturesFilterFunction);
+export const getDisplayedSignatures = state =>
+  state.viewer.savedSignatures.filter(state.viewer.displayedSignaturesFilterFunction);
 export const getSelectedDisplayedSignatureIndex = state => state.viewer.selectedDisplayedSignatureIndex;
-export const getSelectedDisplayedSignature = state => getDisplayedSignatures(state)[getSelectedDisplayedSignatureIndex(state)];
+export const getSelectedDisplayedSignature = state =>
+  getDisplayedSignatures(state)[getSelectedDisplayedSignatureIndex(state)];
 export const getDisplayedSignaturesFilterFunction = state => state.viewer.displayedSignaturesFilterFunction;
 
-export const getNotesInLeftPanel = state =>
-  state.viewer.notesInLeftPanel;
-export const getLeftPanelWidth = state =>
-  state.viewer.panelWidths.leftPanel;
-export const getSearchPanelWidth = state =>
-  state.viewer.panelWidths.searchPanel;
-export const getNotesPanelWidth = state =>
-  state.viewer.panelWidths.notesPanel;
+export const getNotesInLeftPanel = state => state.viewer.notesInLeftPanel;
+export const getLeftPanelWidth = state => state.viewer.panelWidths.leftPanel;
+export const getSearchPanelWidth = state => state.viewer.panelWidths.searchPanel;
+export const getNotesPanelWidth = state => state.viewer.panelWidths.notesPanel;
 
 const RESIZE_BAR_WIDTH = 14; // 14px Need to update this if styling results in a change to width.
-export const getLeftPanelWidthWithReszieBar = state =>
-  state.viewer.panelWidths.leftPanel + RESIZE_BAR_WIDTH;
-export const getSearchPanelWidthWithReszieBar = state =>
-  state.viewer.panelWidths.searchPanel + RESIZE_BAR_WIDTH;
-export const getNotesPanelWidthWithReszieBar = state =>
-  state.viewer.panelWidths.notesPanel + RESIZE_BAR_WIDTH;
+export const getLeftPanelWidthWithReszieBar = state => state.viewer.panelWidths.leftPanel + RESIZE_BAR_WIDTH;
+export const getSearchPanelWidthWithReszieBar = state => state.viewer.panelWidths.searchPanel + RESIZE_BAR_WIDTH;
+export const getNotesPanelWidthWithReszieBar = state => state.viewer.panelWidths.notesPanel + RESIZE_BAR_WIDTH;
 export const getDocumentContentContainerWidthStyle = state => {
   const notesPanelWidth = getNotesPanelWidthWithReszieBar(state);
   const searchPanelWidth = getSearchPanelWidthWithReszieBar(state);
@@ -48,7 +43,8 @@ export const getDocumentContentContainerWidthStyle = state => {
   const isNotesPanelOpen = isElementOpen(state, 'notesPanel');
   const isSearchPanelOpen = isElementOpen(state, 'searchPanel');
 
-  const spaceTakenUpByPanels = 0 +
+  const spaceTakenUpByPanels =
+    0 +
     (isLeftPanelOpen ? leftPanelWidth : 0) +
     (isNotesPanelOpen ? notesPanelWidth : 0) +
     (isSearchPanelOpen ? searchPanelWidth : 0);
@@ -56,17 +52,13 @@ export const getDocumentContentContainerWidthStyle = state => {
   return `calc(100% - ${spaceTakenUpByPanels}px)`;
 };
 
-export const getDocumentContainerWidth = state =>
-  state.viewer.documentContainerWidth;
-export const getDocumentContainerHeight = state =>
-  state.viewer.documentContainerHeight;
+export const getDocumentContainerWidth = state => state.viewer.documentContainerWidth;
+export const getDocumentContainerHeight = state => state.viewer.documentContainerHeight;
 
-export const isElementDisabled = (state, dataElement) =>
-  state.viewer?.disabledElements[dataElement]?.disabled;
+export const isElementDisabled = (state, dataElement) => state.viewer?.disabledElements[dataElement]?.disabled;
 
 export const isElementOpen = (state, dataElement) =>
-  state.viewer?.openElements[dataElement] &&
-  !state.viewer?.disabledElements[dataElement]?.disabled;
+  state.viewer?.openElements[dataElement] && !state.viewer?.disabledElements[dataElement]?.disabled;
 
 export const allButtonsInGroupDisabled = (state, toolGroup) => {
   const toolButtonObjects = getToolButtonObjects(state);
@@ -74,14 +66,11 @@ export const allButtonsInGroupDisabled = (state, toolGroup) => {
     .filter(({ group }) => group === toolGroup)
     .map(({ dataElement }) => dataElement);
 
-  return dataElements.every(dataElement =>
-    isElementDisabled(state, dataElement),
-  );
+  return dataElements.every(dataElement => isElementDisabled(state, dataElement));
 };
 
 const getToolbarGroupDataElements = state => {
-  return Object.keys(state.viewer.headers)
-    .filter(key => key.includes('toolbarGroup-'));
+  return Object.keys(state.viewer.headers).filter(key => key.includes('toolbarGroup-'));
 };
 
 export const getEnabledToolbarGroups = state => {
@@ -91,18 +80,18 @@ export const getEnabledToolbarGroups = state => {
     const toolGroupButtons = headerItems.filter(({ dataElement }) => {
       return dataElement && dataElement.includes('ToolGroupButton');
     });
-    const isEveryToolGroupButtonDisabled  = !dataElement.includes('toolbarGroup-View') && toolGroupButtons.every(({ dataElement: toolGroupDataElement }) => {
-      return isElementDisabled(state, toolGroupDataElement);
-    });
+    const isEveryToolGroupButtonDisabled =
+      !dataElement.includes('toolbarGroup-View') &&
+      toolGroupButtons.every(({ dataElement: toolGroupDataElement }) => {
+        return isElementDisabled(state, toolGroupDataElement);
+      });
     return !isElementDisabled(state, `${dataElement}`) && !isEveryToolGroupButtonDisabled;
   });
 };
 
-export const getCurrentToolbarGroup = state =>
-  state.viewer.toolbarGroup;
+export const getCurrentToolbarGroup = state => state.viewer.toolbarGroup;
 
-export const getActiveTheme = state =>
-  state.viewer.activeTheme;
+export const getActiveTheme = state => state.viewer.activeTheme;
 
 export const getDefaultHeaderItems = state => {
   return state.viewer.headers.default;
@@ -112,8 +101,7 @@ export const getActiveHeaderItems = state => {
   return state.viewer.headers[state.viewer.activeHeaderGroup];
 };
 
-export const getDisabledElementPriority = (state, dataElement) =>
-  state.viewer.disabledElements[dataElement]?.priority;
+export const getDisabledElementPriority = (state, dataElement) => state.viewer.disabledElements[dataElement]?.priority;
 
 export const getToolsHeaderItems = state => {
   const toolbarGroup = getCurrentToolbarGroup(state);
@@ -127,42 +115,31 @@ export const getToolButtonObjects = state => {
 export const getActiveToolNamesForActiveToolGroup = state => {
   const { activeToolGroup } = state.viewer;
   const toolButtonObjects = getToolButtonObjects(state);
-  return Object.keys(toolButtonObjects).filter(
-    toolName => {
-      const toolButtonObject = toolButtonObjects[toolName];
-      const { group, dataElement } = toolButtonObject;
-      return group === activeToolGroup && !isElementDisabled(state, dataElement);
-    },
-  );
+  return Object.keys(toolButtonObjects).filter(toolName => {
+    const toolButtonObject = toolButtonObjects[toolName];
+    const { group, dataElement } = toolButtonObject;
+    return group === activeToolGroup && !isElementDisabled(state, dataElement);
+  });
 };
 
 export const getToolButtonDataElements = (state, toolNames) => {
   const toolButtonObjects = getToolButtonObjects(state);
-  return toolNames
-    .map(toolName => toolButtonObjects[toolName]?.dataElement)
-    .filter(Boolean);
+  return toolNames.map(toolName => toolButtonObjects[toolName]?.dataElement).filter(Boolean);
 };
 
-export const getToolButtonObject = (state, toolName) =>
-  getToolButtonObjects(state)[toolName];
+export const getToolButtonObject = (state, toolName) => getToolButtonObjects(state)[toolName];
 
-export const getToolButtonDataElement = (state, toolName) =>
-  getToolButtonObject(state, toolName)?.dataElement;
+export const getToolButtonDataElement = (state, toolName) => getToolButtonObject(state, toolName)?.dataElement;
 
 export const getToolNamesByGroup = (state, toolGroup) => {
   const toolButtonObjects = getToolButtonObjects(state);
-  return Object.keys(toolButtonObjects).filter(
-    name => toolButtonObjects[name].group === toolGroup,
-  );
+  return Object.keys(toolButtonObjects).filter(name => toolButtonObjects[name].group === toolGroup);
 };
 
 export const getToolNameByDataElement = (state, dataElement) => {
   const toolButtonObjects = getToolButtonObjects(state);
-  return Object.keys(toolButtonObjects).find(
-    name => toolButtonObjects[name].dataElement === dataElement,
-  );
+  return Object.keys(toolButtonObjects).find(name => toolButtonObjects[name].dataElement === dataElement);
 };
-
 
 export const getActiveToolName = state => state.viewer.activeToolName;
 
@@ -226,11 +203,9 @@ export const getOpenElements = state => state.viewer.openElements;
 
 export const getDisabledElements = state => state.viewer.disabledElements;
 
-export const getCurrentPalette = (state, colorMapKey) =>
-  state.viewer.colorMap[colorMapKey]?.currentPalette;
+export const getCurrentPalette = (state, colorMapKey) => state.viewer.colorMap[colorMapKey]?.currentPalette;
 
-export const getIconColor = (state, colorMapKey) =>
-  state.viewer.colorMap[colorMapKey]?.iconColor;
+export const getIconColor = (state, colorMapKey) => state.viewer.colorMap[colorMapKey]?.iconColor;
 
 export const getCustomNoteFilter = state => state.viewer.customNoteFilter;
 
@@ -254,8 +229,7 @@ export const getSelectedTab = (state, id) => state.viewer.tab[id];
 
 export const getCustomElementOverrides = (state, dataElement = '') => state.viewer.customElementOverrides[dataElement];
 
-export const getPopupItems = (state, popupDataElement) =>
-  state.viewer[popupDataElement] || [];
+export const getPopupItems = (state, popupDataElement) => state.viewer[popupDataElement] || [];
 
 export const getMenuOverlayItems = state => state.viewer.menuOverlay;
 
@@ -290,8 +264,7 @@ export const getWarningTitle = state => state.viewer.warning?.title || '';
 
 export const getWarningConfirmEvent = state => state.viewer.warning?.onConfirm;
 
-export const getWarningConfirmBtnText = state =>
-  state.viewer.warning?.confirmBtnText;
+export const getWarningConfirmBtnText = state => state.viewer.warning?.confirmBtnText;
 
 export const getWarningCancelEvent = state => state.viewer.warning?.onCancel;
 

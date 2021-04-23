@@ -18,7 +18,9 @@
     "translation": "node ./scripts/translate-i18n-files.js",
     "storybook": "start-storybook -p 6006 --ci",
     "jest": "jest",
-    "jest:watch": "jest --watch"
+    "jest:watch": "jest --watch",
+    "dist": "rimraf ../cat.europe/pdftron-webviewer/lib/ui/ && cp -R ./build/ ../cat.europe/pdftron-webviewer/lib/ui/ && cp -R ../cat.europe/pdftron-webviewer/ /Users/vinzenz/Library/Containers/com.CATEurope.eLearning.alpha/Data/Documents",
+    "build-dist": "npm run build && npm run dist"
   },
   "dependencies": {
     "@babel/polyfill": "^7.11.5",

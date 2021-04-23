@@ -17,7 +17,7 @@ class EditingBookmark extends React.PureComponent {
     onCancel: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     bookmarkText: PropTypes.string.isRequired,
-  }
+  };
 
   render() {
     const { className, onSave, onCancel, label, t } = this.props;

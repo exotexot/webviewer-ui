@@ -23,7 +23,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      color: var(--primary-button-text);
+      // color: svar(--primary-button-text);
+      color: var(--outline-color);
       padding: 6px 18px;
       width: auto;
       width: fit-content;
@@ -40,6 +41,7 @@
 
   .bookmarks-panel-row {
     // margin: 0 8px 16px 16px;
+    margin: 0;
 
     .bookmarks-panel-label {
       margin-top: 8px;

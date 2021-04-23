@@ -6,21 +6,31 @@ import { useSelector, shallowEqual } from 'react-redux';
 import selectors from 'selectors';
 
 import './OutlineNew.scss';
+import Icon from 'components/Icon';
 
 const propTypes = {
   label: PropTypes.string.isRequired,
   page: PropTypes.string.isRequired,
   wholeOutline: PropTypes.object,
   activeMode: PropTypes.string,
+  editable: PropTypes.bool,
+  removeBookmark: PropTypes.func,
 };
 
-function OutlineNew({ label, page, wholeOutline, activeMode = 'page' }) {
+function OutlineNew({ label, page, wholeOutline, activeMode = 'page', editable = false, removeBookmark }) {
   const handleOutlineClick = useCallback(
     function () {
       core.setCurrentPage(page);
     },
     [page],
   );
+
+  const handleDeleteClick = useCallback(function () {
+    const result = confirm('Delete bookmark\nDo you want to delete this bookmark?');
+    if (result) {
+      removeBookmark(page - 1);
+    }
+  }, []);
 
   const [currentPage] = useSelector(state => [selectors.getCurrentPage(state)], shallowEqual);
   const closestSmaller = (outline, page, returnIndex = false) => {
@@ -58,6 +68,14 @@ function OutlineNew({ label, page, wholeOutline, activeMode = 'page' }) {
   return (
     <div className="OutlineNew">
       <div className={classNames({ content: true, editable: false })}>
+        {editable && (
+          <button className="delete" onClick={handleDeleteClick}>
+            <div className="icon-container">
+              <Icon glyph="icon-close" />
+            </div>
+          </button>
+        )}
+
         <button className="CustomButton" onClick={handleOutlineClick}>
           <div className={classNames({ row: true })}>
             {label}
