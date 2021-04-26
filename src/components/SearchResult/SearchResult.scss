@@ -34,17 +34,20 @@
     &.paddingBot {
       padding-bottom: 5px;
     }
+
+    p {
+      padding-right: 16px;
+    }
   }
 
   p {
     padding: 0;
     margin: 0;
-    padding-right: 10px;
   }
 
   .multiChapterName {
     color: var(--textSofter);
-    width: 225px;
+    width: 220px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -60,6 +63,7 @@
   .indicator {
     background: var(--backgroundLight);
     padding: 0 4px;
+    margin-right: 14px;
     max-height: 16px;
     border-radius: 7px;
     color: var(--outline-color);
