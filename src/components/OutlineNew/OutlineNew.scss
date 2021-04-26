@@ -12,6 +12,8 @@ $arrow-size: 19px;
   margin: 0;
   padding: 0;
   // background: green;
+  // position: relative;
+  // z-index: 1001;
 
   .delete {
     display: none;
@@ -22,6 +24,8 @@ $arrow-size: 19px;
     // background-color: red;
     background: none;
     border: 0;
+    // position: relative;
+    // z-index: 1001;
     // background: red;
 
     .icon-container {
@@ -33,15 +37,21 @@ $arrow-size: 19px;
       margin-left: 4px;
       padding-top: 5px;
       // background: yellow;
+      // position: relative;
+      // z-index: 1001;
     }
   }
 
   &.deletable:hover .delete {
     display: flex;
+    // position: relative;
+    // z-index: 1001;
   }
 
   &.deletable:hover .row {
     padding-left: 0px !important;
+    // position: relative;
+    // z-index: 1001;
     // background: red;
   }
 
@@ -83,6 +93,7 @@ $arrow-size: 19px;
       display: flex;
       flex: 1;
       background: none !important;
+      // background: blue;
     }
 
     .indicator {

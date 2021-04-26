@@ -18,6 +18,7 @@ const propTypes = {
 };
 
 function OutlineNew({ label, page, wholeOutline, activeMode = 'page', deletable = false, removeBookmark }) {
+
   const handleOutlineClick = useCallback(
     function () {
       core.setCurrentPage(page);
@@ -25,12 +26,15 @@ function OutlineNew({ label, page, wholeOutline, activeMode = 'page', deletable 
     [page],
   );
 
-  const handleDeleteClick = useCallback(function () {
-    const result = confirm('Delete bookmark\nDo you want to delete this bookmark?');
-    if (result) {
+  const handleDeleteClick = useCallback(
+    function () {
+      // const result = confirm('Delete bookmark\nDo you want to delete this bookmark?');
+      // if (result) {
       removeBookmark(page - 1);
-    }
-  }, []);
+      // }
+    },
+    [page],
+  );
 
   const [currentPage] = useSelector(state => [selectors.getCurrentPage(state)], shallowEqual);
   const closestSmaller = (outline, page, returnIndex = false) => {
@@ -75,7 +79,6 @@ function OutlineNew({ label, page, wholeOutline, activeMode = 'page', deletable 
             </div>
           </button>
         )}
-
         <button className="CustomButton notEditable" onClick={handleOutlineClick}>
           <div className={classNames({ row: true })}>
             {label}
