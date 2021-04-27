@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 
-import Outline from 'components/Outline';
-import Icon from 'components/Icon';
+import actions from 'actions';
 
 import core from 'core';
 import selectors from 'selectors';
@@ -13,9 +11,10 @@ import './SettingsPanel.scss';
 
 import { RadioGroup, Radio } from 'react-radio-group';
 import Switch from 'react-switch';
+import { useStore } from 'react-redux';
 
 function SettingsPanel() {
-  const outlines = useSelector(state => selectors.getOutlines(state));
+  // const outlines = useSelector(state => selectors.getOutlines(state));
 
   const persistedLayout = window.top.persitedLayout;
 
@@ -90,9 +89,20 @@ function SettingsPanel() {
     core.setDisplayMode(l);
   };
 
+  const [colorMode, setColorMode] = React.useState('light');
+
+  // const handleColorChange = value => {
+  //   setColorMode(value);
+  //   // actions.setActiveTheme(value);
+
+  //   window.top.instance.setColor
+
+  //   alert(value);
+  // };
+
   return (
     <div className="Panel SettingsPanel" data-element="settingsPanel">
-      <p> Settings </p>
+      <p> Page Layout </p>
       {/* <button
         onClick={() => {
           window.utils.setCanvasMultiplier(mul);
@@ -123,7 +133,7 @@ function SettingsPanel() {
           checked={continuous}
           onChange={handleSwitchChange}
           onColor="#FA7614"
-          onHandleColor="white"
+          onHandleColor="#FFFFFF"
           handleDiameter={18}
           uncheckedIcon={false}
           checkedIcon={false}
@@ -133,6 +143,21 @@ function SettingsPanel() {
           width={30}
         />
       </label>
+
+      <br />
+      <br />
+
+      {/* <p> Color Mode </p>
+      <RadioGroup name="fruit" selectedValue={colorMode} onChange={handleColorChange}>
+        <label className="container">
+          <Radio value="light" /> Light Mode
+          <span className="checkmark"></span>
+        </label>
+        <label className="container">
+          <Radio value="dark" /> Dark Mode
+          <span className="checkmark"></span>
+        </label>
+      </RadioGroup> */}
     </div>
   );
 }

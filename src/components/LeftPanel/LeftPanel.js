@@ -117,7 +117,7 @@ const LeftPanel = () => {
         </div> */}
 
         {activePanel === 'outlinesPanel' && <OutlinesPanel />}
-        {activePanel === 'thumbnailsPanel' && <ThumbnailsPanel />}
+        {activePanel === 'thumbnailsPanel' && <SettingsPanel />}
         {activePanel === 'leftSearchPanel' && <SearchPanel />}
         {activePanel === 'leftBookmarksPanel' && <BookmarksPanel />}
         {activePanel === 'settingsPanel' && <SettingsPanel />}
