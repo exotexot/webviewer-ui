@@ -22,7 +22,8 @@ function SettingsPanel() {
     core.setDisplayMode(value);
   };
 
-  const [layoutMode, setLayoutMode] = React.useState('orange');
+  const initialLayout = window.top.persitedLayout;
+  const [layoutMode, setLayoutMode] = React.useState(initialLayout);
   const handleChange = value => {
     setLayoutMode(value);
     core.setDisplayMode(value);
@@ -41,15 +42,6 @@ function SettingsPanel() {
       >
         <p>Test</p>
       </button> */}
-
-      {/* <RadioGroup onChange={onChange}>
-        <ReversedRadioButton value="Single">Single</ReversedRadioButton>
-        <ReversedRadioButton value="Continuous">Continuous</ReversedRadioButton>
-        <ReversedRadioButton value="Facing">Facing</ReversedRadioButton>
-        <ReversedRadioButton value="FacingContinuous">FacingContinuous</ReversedRadioButton>
-        <ReversedRadioButton value="CoverFacing">CoverFacing</ReversedRadioButton>
-        <ReversedRadioButton value="Cover">Cover</ReversedRadioButton>
-      </RadioGroup> */}
 
       <RadioGroup name="fruit" selectedValue={layoutMode} onChange={handleChange}>
         <label className="container">
