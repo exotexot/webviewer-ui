@@ -32,13 +32,6 @@ function SettingsPanel() {
     return l;
   };
 
-  // Layout Modes
-  const [layoutMode, setLayoutMode] = React.useState(initialLayout);
-  const handleChange = value => {
-    setLayoutMode(value);
-    core.setDisplayMode(value);
-  };
-
   // Continuous
   const initialContinuous = () => {
     let l;
@@ -89,7 +82,25 @@ function SettingsPanel() {
     core.setDisplayMode(l);
   };
 
-  const [colorMode, setColorMode] = React.useState('light');
+  // Layout Modes
+  const [layoutMode, setLayoutMode] = React.useState(initialLayout);
+  const handleChange = value => {
+    setLayoutMode(value);
+
+    let l;
+
+    if (value === 'Single') {
+      l = continuous ? 'Continuous' : 'Single';
+    } else if (value === 'Facing') {
+      l = continuous ? 'FacingContinuous' : 'Facing';
+    } else if (value === 'CoverFacing') {
+      l = continuous ? 'Cover' : 'CoverFacing';
+    }
+
+    core.setDisplayMode(l);
+  };
+
+  // const [colorMode, setColorMode] = React.useState('light');
 
   // const handleColorChange = value => {
   //   setColorMode(value);
