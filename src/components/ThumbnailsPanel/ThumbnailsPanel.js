@@ -267,7 +267,7 @@ const ThumbnailsPanel = () => {
 
   // if disabled or is not open return
   if (isDisabled || !isOpen) {
-    return null;
+    return null
   }
 
   const onDragEnd = () => {
@@ -503,6 +503,8 @@ const ThumbnailsPanel = () => {
                 overscanRowCount={3}
                 className={'thumbnailsList'}
                 style={{ outline: 'none' }}
+                // Ensure we show the current page in the thumbnails when we open the panel
+                scrollToIndex={currentPage - 1}
               />
             </div>
           </div>

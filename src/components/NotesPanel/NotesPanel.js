@@ -68,6 +68,7 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
   // use a map here instead of an array to achieve an O(1) time complexity for checking if a note is selected
   const [selectedNoteIds, setSelectedNoteIds] = useState({});
   const [searchInput, setSearchInput] = useState('');
+  const [scrollToSelectedAnnot, setScrollToSelectedAnnot] = useState(false);
   const [t] = useTranslation();
   const listRef = useRef();
   // a ref that is used to keep track of the current scroll position
@@ -117,6 +118,7 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
       });
       if (isOpen) {
         setSelectedNoteIds(ids);
+        setScrollToSelectedAnnot(true);
       }
     };
     onAnnotationSelected();
@@ -148,6 +150,17 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
     dispatch(actions.closeElement('annotationNoteConnectorLine'));
   };
 
+  const filterNotesWithSearch = note => {
+    const content = note.getContents();
+    const authorName = core.getDisplayAuthor(note);
+
+    // didn't use regex here because the search input may form an invalid regex, e.g. *
+    return (
+      content?.toLowerCase().includes(searchInput.toLowerCase()) ||
+      authorName?.toLowerCase().includes(searchInput.toLowerCase())
+    );
+  };
+
   const filterNote = note => {
     let shouldRender = true;
 
@@ -163,21 +176,26 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
 
       shouldRender =
         shouldRender &&
-        noteAndReplies.some(note => {
-          const content = note.getContents();
-          const authorName = core.getDisplayAuthor(note);
-
-          // didn't use regex here because the search input may form an invalid regex, e.g. *
-          return (
-            content?.toLowerCase().includes(searchInput.toLowerCase()) ||
-            authorName?.toLowerCase().includes(searchInput.toLowerCase())
-          );
-        });
+        noteAndReplies.some(filterNotesWithSearch);
     }
 
     return shouldRender;
   };
 
+  const notesToRender = getSortStrategies()
+  [sortStrategy].getSortedNotes(notes)
+  .filter(filterNote);
+
+  //expand a reply note when search content is match
+  const onlyReplyContainsSearchInput = currNote => {
+    if (Object.keys(selectedNoteIds).length) {
+      return false;
+    }
+    return searchInput && notesToRender.filter(note => {
+      return note.getReplies().some(filterNotesWithSearch);
+    }).some(replies => replies.Id === currNote.Id);
+  };
+  
   const handleInputChange = e => {
     _handleInputChange(e.target.value);
   };
@@ -232,15 +250,16 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
 
     //Collapse an expanded note when the top non-reply NoteContent is clicked
     const handleNoteClicked = () => {
-      if(selectedNoteIds[currNote.Id]) {
+      if (selectedNoteIds[currNote.Id]) {
         setSelectedNoteIds(currIds => {
-          const clone = {...currIds};
+          const clone = { ...currIds };
           delete clone[currNote.Id];
           return clone;
         });
         core.deselectAnnotation(currNote);
       }
-    }
+    };
+
     // can potentially optimize this a bit since a new reference will cause consumers to rerender
     const contextValue = {
       searchInput,
@@ -254,10 +273,13 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
       isDocumentReadOnly,
       isNotePanelOpen: isOpen,
       onTopNoteContentClicked: handleNoteClicked,
+      isExpandedFromSearch: onlyReplyContainsSearchInput(currNote),
+      scrollToSelectedAnnot,
     };
 
     if (index === singleSelectedNoteIndex) {
       setTimeout(() => {
+        setScrollToSelectedAnnot(false);
         // open the 'annotationNoteConnectorLine' since the note it's pointing to is being rendered
         dispatch(actions.openElement('annotationNoteConnectorLine'));
       }, 0);
@@ -277,10 +299,6 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
       </div>
     );
   };
-
-  const notesToRender = getSortStrategies()
-  [sortStrategy].getSortedNotes(notes)
-    .filter(filterNote);
 
   const NoResults = (
     <div className="no-results">
@@ -328,8 +346,6 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
       })}
       style={style}
       data-element="notesPanel"
-      onClick={core.deselectAllAnnotations}
-      onMouseUp={() => core.deselectAllAnnotations}
     >
       {isMobile && !notesInLeftPanel &&
         <div
@@ -393,15 +409,15 @@ const NotesPanel = ({ currentLeftPanelWidth }) => {
             {renderChild}
           </NormalList>
         ) : (
-            <VirtualizedList
-              ref={listRef}
-              notes={notesToRender}
-              onScroll={handleScroll}
-              initialScrollTop={scrollTopRef.current}
-              selectedIndex={singleSelectedNoteIndex}
-            >
-              {renderChild}
-            </VirtualizedList>
+          <VirtualizedList
+            ref={listRef}
+            notes={notesToRender}
+            onScroll={handleScroll}
+            initialScrollTop={scrollTopRef.current}
+            selectedIndex={singleSelectedNoteIndex}
+          >
+            {renderChild}
+          </VirtualizedList>
           )}
       </React.Fragment>
     </div>
