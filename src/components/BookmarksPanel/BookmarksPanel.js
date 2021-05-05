@@ -14,77 +14,123 @@ import selectors from 'selectors';
 
 import './BookmarksPanel.scss';
 
-class BookmarksPanel extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAdding: false,
-    };
+import { useSelector } from 'react-redux';
+
+const propTypes = {
+  bookmarks: PropTypes.object,
+  addBookmark: PropTypes.func.isRequired,
+  removeBookmark: PropTypes.func,
+  currentPage: PropTypes.number.isRequired,
+  isDisabled: PropTypes.bool,
+  t: PropTypes.func.isRequired,
+  pageLabels: PropTypes.array.isRequired,
+};
+
+const BookmarksPanel = props => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     isAdding: false,
+  //   };
+  // }
+
+  const { isDisabled, bookmarks, addBookmark, removeBookmark, currentPage, t, pageLabels } = props;
+
+  const [isAdding, setIsAdding] = React.useState(false);
+
+  if (isDisabled) {
+    return null;
   }
 
-  static propTypes = {
-    bookmarks: PropTypes.object,
-    addBookmark: PropTypes.func.isRequired,
-    removeBookmark: PropTypes.func,
-    currentPage: PropTypes.number.isRequired,
-    isDisabled: PropTypes.bool,
-    t: PropTypes.func.isRequired,
-    pageLabels: PropTypes.array.isRequired,
-  };
+  const pageIndexes = Object.keys(bookmarks).map(pageIndex => parseInt(pageIndex, 10));
 
-  render() {
-    const { isDisabled, bookmarks, addBookmark, removeBookmark, currentPage, t, pageLabels } = this.props;
+  const outlines = useSelector(state => selectors.getOutlines(state));
 
-    if (isDisabled) {
-      return null;
+  const [bookmarkTitle, setBookmarkTitle] = React.useState('');
+  React.useEffect(() => {
+    let run = true;
+
+    if (run) {
+      let t = '';
+
+      const newOutline = flatten(outlines);
+
+      // Try to find the current bookmark Title
+      if (bookmarks[currentPage - 1]) {
+        t = bookmarks[currentPage - 1];
+      } else if (newOutline.length > 0) {
+        // Trying to find chapter title
+        // const chapter = findChapterTitle(currentPage);
+        const chapter = 'Tamam';
+        console.log('CHAPTER', chapter);
+        if (chapter) t = chapter;
+      } else {
+        // If it doesnt exist pre-populate with page number
+        t = 'Page ';
+        t += currentPage;
+      }
+
+      setBookmarkTitle(t);
     }
 
-    const pageIndexes = Object.keys(bookmarks).map(pageIndex => parseInt(pageIndex, 10));
+    return () => {
+      run = false;
+    };
+  }, [outlines, currentPage, bookmarks]);
 
-    return (
-      <div className="Panel BookmarksPanel" data-element="leftBookmarksPanel">
-        {this.state.isAdding ? (
-          <EditingBookmark
-            className="adding"
-            label={`${t('component.bookmarkPage')} ${pageLabels[currentPage - 1]}: ${t('component.newBookmark')}`}
-            bookmarkText={''}
-            onSave={newText => {
-              addBookmark(currentPage - 1, newText);
-              this.setState({ isAdding: false });
-            }}
-            onCancel={() => {
-              this.setState({ isAdding: false });
+  const [alreadyBookmarked, setAlreadyBookmarked] = React.useState(false);
+  React.useEffect(() => {
+    const check = bookmarks.hasOwnProperty(currentPage - 1);
+    setAlreadyBookmarked(check);
+  }, [bookmarks, currentPage]);
+
+  return (
+    <div className="Panel BookmarksPanel" data-element="leftBookmarksPanel">
+      {isAdding ? (
+        <EditingBookmark
+          className="adding"
+          label={bookmarkTitle}
+          bookmarkText={bookmarkTitle}
+          onSave={newText => {
+            addBookmark(currentPage - 1, newText);
+            // this.setState({ isAdding: false });
+            setIsAdding(false);
+          }}
+          onCancel={() => {
+            // this.setState({ isAdding: false });
+            setIsAdding(false);
+          }}
+        />
+      ) : (
+        <div className="bookmarks-panel-header">
+          {bookmarkTitle}
+          <Button
+            dataElement="newBookmarkButton"
+            className="bookmarks-panel-button"
+            label={alreadyBookmarked ? 'Edit' : '+'}
+            onClick={() => {
+              // this.setState({ isAdding: true });
+              setIsAdding(true);
             }}
           />
-        ) : (
-          <div className="bookmarks-panel-header">
-            <Button
-              dataElement="newBookmarkButton"
-              className="bookmarks-panel-button"
-              label={t('component.newBookmark')}
-              onClick={() => {
-                this.setState({ isAdding: true });
-              }}
-            />
-          </div>
-        )}
-        <div className="bookmarks-panel-row">
-          {pageIndexes.map(pageIndex => (
-            // <div className="bookmarks-panel-label">{`${t('component.bookmarkPage')} ${pageLabels[pageIndex]}`}</div> */}
-            <OutlineNew
-              label={bookmarks[pageIndex]}
-              page={pageIndex + 1}
-              activeMode="page"
-              removeBookmark={removeBookmark}
-              deletable={true}
-            />
-            //  <Bookmark text={bookmarks[pageIndex]} pageIndex={pageIndex} />
-          ))}
         </div>
+      )}
+      <div className="bookmarks-panel-row">
+        {pageIndexes.map(pageIndex => (
+          // <div className="bookmarks-panel-label">{`${t('component.bookmarkPage')} ${pageLabels[pageIndex]}`}</div> */}
+          <OutlineNew
+            label={bookmarks[pageIndex]}
+            page={pageIndex + 1}
+            activeMode="page"
+            removeBookmark={removeBookmark}
+            deletable={true}
+          />
+          //  <Bookmark text={bookmarks[pageIndex]} pageIndex={pageIndex} />
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const mapStateToProps = state => ({
   bookmarks: selectors.getBookmarks(state),
@@ -100,3 +146,44 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BookmarksPanel));
+
+const findChapterTitle = (outl, page) => {
+  if (outl.length < 1) {
+    return false;
+  }
+
+  const numbers = outl.map(a => a.Ac);
+  const chapterNumber = numbers.reduce((a, b) => {
+    let aDiff = Math.abs(a - page);
+    let bDiff = Math.abs(b - page);
+
+    if (aDiff === bDiff) {
+      return a <= b ? a : b;
+    } else {
+      return bDiff < aDiff ? b : a;
+    }
+  });
+
+  const chapter = outl
+    .slice()
+    .reverse()
+    .find(el => el.Ac === chapterNumber);
+
+  return chapter.name;
+  // return "spas12t"
+};
+
+function flatten(array) {
+  return array.reduce((acc, e) => {
+    if (e.Ac === undefined) return acc;
+
+    if (Array.isArray(e.children) && e.children.length > 0) {
+      // if the element is an array, fall flatten on it again and then take the returned value and concat it.
+      acc.push({ name: e.name, Ac: e.Ac });
+      return acc.concat(flatten(e.children));
+    } else {
+      // otherwise just concat the value
+      return acc.concat(e);
+    }
+  }, []); // initial value for the accumulator is []
+}

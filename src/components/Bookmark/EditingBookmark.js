@@ -25,7 +25,7 @@ class EditingBookmark extends React.PureComponent {
 
     return (
       <div className={customClassName}>
-        {label && <div className="editing-label">{label}</div>}
+        {/* {label && <div className="editing-label">{label}</div>} */}
         <input
           type="text"
           name="bookmark"

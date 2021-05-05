@@ -8,7 +8,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 16px;
+    // background: green;
+    padding-top: 14px;
+    padding-left: 16px;
+    padding-bottom: 16px;
+    padding-right: 14px;
 
     .bookmarks-panel-container {
       display: flex;
@@ -25,7 +29,8 @@
       align-items: center;
       // color: svar(--primary-button-text);
       color: var(--outline-color);
-      padding: 6px 18px;
+      padding: 4px 12px;
+
       width: auto;
       width: fit-content;
       background: var(--primary-button);
