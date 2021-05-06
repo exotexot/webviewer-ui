@@ -60,9 +60,7 @@ const BookmarksPanel = props => {
         t = bookmarks[currentPage - 1];
       } else if (newOutline.length > 0) {
         // Trying to find chapter title
-        // const chapter = findChapterTitle(currentPage);
-        const chapter = 'Tamam';
-        console.log('CHAPTER', chapter);
+        const chapter = findChapterTitle(currentPage);
         if (chapter) t = chapter;
       } else {
         // If it doesnt exist pre-populate with page number
