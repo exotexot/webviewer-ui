@@ -56,8 +56,8 @@ const BookmarksPanel = props => {
       const newOutline = flatten(outlines);
 
       // Try to find the current bookmark Title
-      if (bookmarks[currentPage - 1]) {
-        t = bookmarks[currentPage - 1];
+      if (bookmarks[currentPage]) {
+        t = bookmarks[currentPage];
       } else if (newOutline.length > 0) {
         // Trying to find chapter title
         const chapter = findChapterTitle(currentPage);
@@ -78,7 +78,7 @@ const BookmarksPanel = props => {
 
   const [alreadyBookmarked, setAlreadyBookmarked] = React.useState(false);
   React.useEffect(() => {
-    const check = bookmarks.hasOwnProperty(currentPage - 1);
+    const check = bookmarks.hasOwnProperty(currentPage);
     setAlreadyBookmarked(check);
   }, [bookmarks, currentPage]);
 
@@ -90,7 +90,7 @@ const BookmarksPanel = props => {
           label={bookmarkTitle}
           bookmarkText={bookmarkTitle}
           onSave={newText => {
-            addBookmark(currentPage - 1, newText);
+            addBookmark(currentPage, newText);
             // this.setState({ isAdding: false });
             setIsAdding(false);
           }}
@@ -118,7 +118,7 @@ const BookmarksPanel = props => {
           // <div className="bookmarks-panel-label">{`${t('component.bookmarkPage')} ${pageLabels[pageIndex]}`}</div> */}
           <OutlineNew
             label={bookmarks[pageIndex]}
-            page={pageIndex + 1}
+            page={pageIndex}
             activeMode="page"
             removeBookmark={removeBookmark}
             deletable={true}

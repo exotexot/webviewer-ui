@@ -18,7 +18,6 @@ const propTypes = {
 };
 
 function OutlineNew({ label, page, wholeOutline, activeMode = 'page', deletable = false, removeBookmark }) {
-
   const handleOutlineClick = useCallback(
     function () {
       core.setCurrentPage(page);
@@ -30,7 +29,7 @@ function OutlineNew({ label, page, wholeOutline, activeMode = 'page', deletable 
     function () {
       // const result = confirm('Delete bookmark\nDo you want to delete this bookmark?');
       // if (result) {
-      removeBookmark(page - 1);
+      removeBookmark(page);
       // }
     },
     [page],

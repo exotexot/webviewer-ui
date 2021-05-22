@@ -26,7 +26,7 @@ class Bookmark extends React.PureComponent {
     removeBookmark: PropTypes.func.isRequired,
     text: PropTypes.string.isRequired,
     pageIndex: PropTypes.number.isRequired,
-  }
+  };
 
   render() {
     const { text, editBookmark, removeBookmark, pageIndex } = this.props;
@@ -54,30 +54,19 @@ class Bookmark extends React.PureComponent {
         onMouseMove={() => this.setState({ isHovered: true })}
         onMouseLeave={() => this.setState({ isHovered: false })}
       >
-        <div
-          onClick={() => core.setCurrentPage(pageIndex + 1)}
-          className="bookmark-button"
-        >
+        <div onClick={() => core.setCurrentPage(pageIndex + 1)} className="bookmark-button">
           {text}
         </div>
-        {this.state.isHovered &&
+        {this.state.isHovered && (
           <Element dataElement="bookmarkControls" className="bookmark-controls bookmark-button">
-            <div
-              onClick={() => this.setState({ isEditing: true })}
-            >
-              <Icon
-                glyph="edit-24px"
-              />
+            <div onClick={() => this.setState({ isEditing: true })}>
+              <Icon glyph="edit-24px" />
             </div>
-            <div
-              onClick={() => removeBookmark(pageIndex)}
-            >
-              <Icon
-                glyph="cancel-24px"
-              />
+            <div onClick={() => removeBookmark(pageIndex)}>
+              <Icon glyph="cancel-24px" />
             </div>
           </Element>
-        }
+        )}
       </div>
     );
   }
@@ -88,7 +77,4 @@ const mapDispatchToProps = {
   removeBookmark: actions.removeBookmark,
 };
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(Bookmark);
+export default connect(null, mapDispatchToProps)(Bookmark);
