@@ -43,7 +43,6 @@ const BookmarksPanel = props => {
   }
 
   const pageIndexes = Object.keys(bookmarks).map(pageIndex => parseInt(pageIndex, 10));
-
   const outlines = useSelector(state => selectors.getOutlines(state));
 
   const [bookmarkTitle, setBookmarkTitle] = React.useState('');
@@ -58,9 +57,9 @@ const BookmarksPanel = props => {
       // Try to find the current bookmark Title
       if (bookmarks[currentPage]) {
         t = bookmarks[currentPage];
-      } else if (newOutline.length > 0) {
+      } else if (newOutline && newOutline.length > 0) {
         // Trying to find chapter title
-        const chapter = findChapterTitle(currentPage);
+        const chapter = findChapterTitle(newOutline, currentPage);
         if (chapter) t = chapter;
       } else {
         // If it doesnt exist pre-populate with page number
@@ -121,7 +120,7 @@ const BookmarksPanel = props => {
             page={pageIndex}
             activeMode="page"
             removeBookmark={removeBookmark}
-            deletable={true}
+            deletable
           />
           //  <Bookmark text={bookmarks[pageIndex]} pageIndex={pageIndex} />
         ))}
@@ -172,6 +171,7 @@ const findChapterTitle = (outl, page) => {
 };
 
 function flatten(array) {
+
   return array.reduce((acc, e) => {
     if (e.Ac === undefined) return acc;
 
