@@ -267,7 +267,7 @@ const ThumbnailsPanel = () => {
 
   // if disabled or is not open return
   if (isDisabled || !isOpen) {
-    return null
+    return null;
   }
 
   const onDragEnd = () => {
